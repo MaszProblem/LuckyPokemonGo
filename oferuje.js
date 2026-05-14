@@ -1,6 +1,6 @@
 const myShinyCollection = [
     // KANTO
-    { id: 1, name: "Bulbasaur", region: "kanto", shiny: true, costume: false, count:1, type:"normal", gmax: false },
+    //{ id: 1, name: "Bulbasaur", region: "kanto", shiny: true, costume: false, count:1, type:"normal", gmax: false },
     { id: 2, name: "ivysaur", region: "kanto", count: 1, type: "normal" },
     { id: 4, name: "charmander", region: "kanto", count: 7, type: "normal" },
     { id: 6, name: "charizard", region: "kanto", count: 3, type: "normal" },
