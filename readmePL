@@ -1,0 +1,27 @@
+# GlupekzRivii Lucky Trade List 🍀
+
+Strona służąca do prezentacji poszukiwanych Pokemonów w grze Pokemon GO oraz automatycznego generowania filtrów (search strings) do gry.
+
+---
+
+## 🇵🇱 Instrukcja edycji (Polish)
+
+Aby zaktualizować listę Pokemonów na swojej stronie, nie musisz znać się na programowaniu. Wszystko odbywa się w jednym pliku.
+
+### Krok po kroku:
+1. Zaloguj się na GitHub i wejdź do swojego repozytorium.
+2. Kliknij w plik `index.html`, a następnie ikonę ołówka (**Edit this file**).
+3. Zjedź do sekcji opisanej jako `// LISTY POKEMONÓW` (okolice 155. linii).
+4. Edytuj nazwy w nawiasach `[ ]`:
+   - Nazwy muszą być w cudzysłowie `" "`.
+   - Nazwy muszą być oddzielone przecinkiem.
+   - Używaj nazw angielskich (np. `"rayquaza"`, `"snorunt"`).
+   - **Formy specjalne:** Aby wyświetlić konkretną formę (np. Palkia Origin), wpisz `"palkia-origin"`. Kod sam skróci nazwę w grze do "palkia".
+5. Po zakończeniu edycji zjedź na dół i kliknij **Commit changes**, aby zapisać zmiany. Strona zaktualizuje się automatycznie w ciągu minuty.
+
+### Przykład edycji listy:
+```javascript
+const pveShiny = ["rayquaza", "mewtwo", "kyogre"];
+
+
+Przygotowane za pomocą AI Gemini
