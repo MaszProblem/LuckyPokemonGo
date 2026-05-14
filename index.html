@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,40 +19,166 @@
         h1 {
             color: #f1c40f;
             margin-top: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
             font-size: 28px;
             text-align: center;
         }
 
-        .section-title {
+        /* TABS SYSTEM */
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
             width: 100%;
             max-width: 900px;
-            font-size: 20px;
-            border-bottom: 2px solid #2c2c35;
-            padding-bottom: 8px;
-            margin-top: 40px;
-            margin-bottom: 10px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background-color: #1a1a1e;
+            border: 2px solid #2c2c35;
+            color: #888;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Kolory sekcji */
-        .color-pve-shiny { color: #f39c12; }
-        .color-pve-legacy { color: #e74c3c; }
-        .color-pve-both { color: #9b59b6; }
-        .color-pve-normal { color: #3498db; }
-        .color-others { color: #95a5a6; }
-        .color-unown { color: #1abc9c; }
+        .tab-btn:hover { border-color: #f1c40f; color: #fff; }
+        .tab-btn.active {
+            background-color: #f1c40f;
+            border-color: #f1c40f;
+            color: #121214;
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
+        }
 
-        .string-container {
+        .tab-content {
+            display: none;
             width: 100%;
             max-width: 900px;
+        }
+
+        .tab-content.active { display: block; }
+
+        /* COLLAPSIBLE SECTION HEADERS */
+        .section-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #2c2c35;
+            padding-bottom: 8px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section-title {
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .collapse-arrow {
+            font-size: 16px;
+			transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: rotate(-90deg); /* Domyślnie skręcona w bok (zwinięte) */
+        }
+
+        /* Klasa dodawana gdy sekcja jest rozwinięta */
+        .section-header.expanded .collapse-arrow {
+            transform: rotate(0deg); /* Obrót w dół */
+        }
+
+        /* COLLAPSIBLE CONTENT CONTAINER */
+		/* Zawartość - przygotowanie do animacji */
+		.collapsible-content {
+			width: 100%;
+			max-height: 0;         /* Domyślnie wysokość 0 */
+			overflow: hidden;      /* Ukrywamy to, co wystaje */
+			opacity: 0;            /* Domyślnie niewidoczne */
+			transition: max-height 0.3s ease-out, opacity 0.3s ease; /* Płynne przejście */
+		}
+
+        .section-header.expanded + .collapsible-content {
+            display: block; /* Pokaż tylko gdy nagłówek ma klasę expanded */
+        }	
+		
+		.section-header.active + .collapsible-content {
+			display: block;        /* Musi być widoczne w strukturze */
+			max-height: 2000px;    /* Dowolna duża wartość, większa niż Twoja lista */
+			opacity: 1;            /* Pełna widoczność */
+			margin-bottom: 20px;   /* Odstęp po rozwinięciu */
+		}
+		
+		.section-header.active .collapse-arrow {
+			transform: rotate(0deg);
+		}
+        /* Header Colors */
+        .color-pve-shiny { color: #f39c12; border-color: #d35400; }
+        .color-pve-legacy { color: #e74c3c; border-color: #c0392b; }
+        .color-pve-both { color: #9b59b6; border-color: #8e44ad; }
+        .color-pve-normal { color: #3498db; border-color: #2980b9; }
+        .color-others { color: #95a5a6; border-color: #7f8c8d; }
+        .color-unown { color: #1abc9c; border-color: #16a085; }
+        
+        /* Region Colors for Offer */
+        .color-region { color: #2ecc71; border-color: #27ae60; }
+        .color-region .section-title { font-size: 18px; }
+
+        /* FILTER BUTTONS */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .filter-btn {
+            background-color: #1a1a1e;
+            border: 1px solid #2c2c35;
+            color: #aaa;
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: #2ecc71;
+            color: #fff;
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+
+        /* CONTROL TOTALS SUMMARY */
+        .summary-badge {
+            background-color: #1a1a1e;
+            border: 1px solid #2c2c35;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #2ecc71;
+            display: inline-block;
+        }
+
+        /* STRING COPIER FOR WISHLIST */
+        .string-container {
+            width: 100%;
             display: flex;
             background-color: #1a1a1e;
             border: 1px solid #2c2c35;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             overflow: hidden;
         }
 
@@ -76,29 +202,32 @@
             font-weight: bold;
             font-size: 11px;
             transition: background-color 0.2s;
+            white-space: nowrap;
         }
 
         .copy-btn:hover { background-color: #444; }
 
+        /* GRIDS */
         .pokemon-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 15px;
             width: 100%;
-            max-width: 900px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .pokemon-card {
             background-color: #1a1a1e;
             border: 1px solid #2c2c35;
             border-radius: 12px;
-            padding: 10px;
+            padding: 15px 10px;
             text-align: center;
             transition: transform 0.2s;
+            position: relative;
         }
 
         .pokemon-card:hover { transform: translateY(-3px); border-color: #f1c40f; }
+        #my-offer-grid-container .pokemon-card:hover { border-color: #2ecc71; }
 
         .pokemon-card img {
             width: 80px;
@@ -113,14 +242,22 @@
             text-transform: capitalize;
         }
 
-        .badge-shiny {
-            display: inline-block;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            background: linear-gradient(45deg, #f39c12, #d35400);
-            margin-top: 5px;
+        .count-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #e67e22;
             color: white;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            border: 2px solid #121214;
         }
     </style>
 </head>
@@ -128,160 +265,304 @@
 
     <h1>GlupekzRivii Lucky Trade</h1>
 
-    <div class="section-title color-pve-shiny">✨ PvE Shiny</div>
-    <div class="string-container">
-        <input type="text" id="pve-shiny-str" class="string-input" readonly>
-        <button class="copy-btn" onclick="copyString('pve-shiny-str', this)">Kopiuj</button>
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab('tab-szukam', this)">🔍 Wishlist</button>
+        <button class="tab-btn" onclick="switchTab('tab-oferuje', this)">🎁 Offer</button>
     </div>
-    <div id="pve-shiny-grid" class="pokemon-grid"></div>
 
-    <div class="section-title color-pve-legacy">🎒 PvE Legacy Attack</div>
-    <div class="string-container">
-        <input type="text" id="pve-legacy-str" class="string-input" readonly>
-        <button class="copy-btn" onclick="copyString('pve-legacy-str', this)">Kopiuj</button>
-    </div>
-    <div id="pve-legacy-grid" class="pokemon-grid"></div>
+    <div id="tab-szukam" class="tab-content active">
+        
+        <div class="section-header color-pve-shiny" onclick="toggleSection(this, 'tab-szukam')">
+            <h2 class="section-title">✨ PvE Shiny</h2>
+            <span class="collapse-arrow">▼</span>
+        </div>
+        <div class="collapsible-content">
+            <div class="string-container"><input type="text" id="pve-shiny-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('pve-shiny-str', this)">Copy String</button></div>
+            <div id="pve-shiny-grid" class="pokemon-grid"></div>
+        </div>
 
-    <div class="section-title color-pve-both">🌟 PvE Shiny Legacy</div>
-    <div class="string-container">
-        <input type="text" id="pve-both-str" class="string-input" readonly>
-        <button class="copy-btn" onclick="copyString('pve-both-str', this)">Kopiuj</button>
-    </div>
-    <div id="pve-both-grid" class="pokemon-grid"></div>
+        <div class="section-header color-pve-legacy" onclick="toggleSection(this, 'tab-szukam')">
+            <h2 class="section-title">🎒 PvE Legacy Attack</h2>
+            <span class="collapse-arrow">▼</span>
+        </div>
+        <div class="collapsible-content">
+            <div class="string-container"><input type="text" id="pve-legacy-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('pve-legacy-str', this)">Copy String</button></div>
+            <div id="pve-legacy-grid" class="pokemon-grid"></div>
+        </div>
 
-    <div class="section-title color-pve-normal">⚔️ PvE Normal</div>
-    <div class="string-container">
-        <input type="text" id="pve-normal-str" class="string-input" readonly>
-        <button class="copy-btn" onclick="copyString('pve-normal-str', this)">Kopiuj</button>
-    </div>
-    <div id="pve-normal-grid" class="pokemon-grid"></div>
+        <div class="section-header color-pve-both" onclick="toggleSection(this, 'tab-szukam')">
+            <h2 class="section-title">🌟 PvE Shiny Legacy</h2>
+            <span class="collapse-arrow">▼</span>
+        </div>
+        <div class="collapsible-content">
+            <div class="string-container"><input type="text" id="pve-both-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('pve-both-str', this)">Copy String</button></div>
+            <div id="pve-both-grid" class="pokemon-grid"></div>
+        </div>
 
-    <div class="section-title color-others">📁 Pozostałe</div>
-    <div class="string-container">
-        <input type="text" id="others-str" class="string-input" readonly>
-        <button class="copy-btn" onclick="copyString('others-str', this)">Kopiuj</button>
-    </div>
-    <div id="others-grid" class="pokemon-grid"></div>
+        <div class="section-header color-pve-normal" onclick="toggleSection(this, 'tab-szukam')">
+            <h2 class="section-title">⚔️ PvE Normal</h2>
+            <span class="collapse-arrow">▼</span>
+        </div>
+        <div class="collapsible-content">
+            <div class="string-container"><input type="text" id="pve-normal-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('pve-normal-str', this)">Copy String</button></div>
+            <div id="pve-normal-grid" class="pokemon-grid"></div>
+        </div>
 
-    <div class="section-title color-unown">🔤 Unown Shiny</div>
-    <div class="string-container">
-        <input type="text" id="unown-str" class="string-input" readonly>
-        <button class="copy-btn" onclick="copyString('unown-str', this)">Kopiuj</button>
+        <div class="section-header color-others" onclick="toggleSection(this, 'tab-szukam')">
+            <h2 class="section-title">📁 Others</h2>
+            <span class="collapse-arrow">▼</span>
+        </div>
+        <div class="collapsible-content">
+            <div class="string-container"><input type="text" id="others-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('others-str', this)">Copy String</button></div>
+            <div id="others-grid" class="pokemon-grid"></div>
+        </div>
+
+        <div class="section-header color-unown" onclick="toggleSection(this, 'tab-szukam')">
+            <h2 class="section-title">🔤 Unown Shiny</h2>
+            <span class="collapse-arrow">▼</span>
+        </div>
+        <div class="collapsible-content">
+            <div class="string-container"><input type="text" id="unown-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('unown-str', this)">Copy String</button></div>
+            <div id="unown-grid" class="pokemon-grid"></div>
+        </div>
     </div>
-    <div id="unown-grid" class="pokemon-grid"></div>
+
+    <div id="tab-oferuje" class="tab-content">
+        <div class="section-title color-offer" style="margin-top: 10px; margin-bottom: 15px;">✨ My Pokémon Offer</div>
+        
+        <div id="total-sum" class="summary-badge">Total Pokémon available: Calculating...</div>
+
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterOffer('all', this)">All</button>
+            <button class="filter-btn" onclick="filterOffer('costume', this)">Costume</button>
+            <button class="filter-btn" onclick="filterOffer('regional', this)">Regional (GO Exclusive)</button>
+            <button class="filter-btn" onclick="filterOffer('background', this)">Background</button>
+        </div>
+
+        <div id="my-offer-grid-container">
+            <div class="region-block" data-region="kanto">
+                <div class="section-header color-region" onclick="toggleSection(this, 'tab-oferuje')"><h3 class="section-title">🗻 Kanto Region</h3><span class="collapse-arrow">▼</span></div>
+                <div class="collapsible-content"><div id="kanto-grid" class="pokemon-grid"></div></div>
+            </div>
+
+            <div class="region-block" data-region="johto">
+                <div class="section-header color-region" onclick="toggleSection(this, 'tab-oferuje')"><h3 class="section-title">🌲 Johto Region</h3><span class="collapse-arrow">▼</span></div>
+                <div class="collapsible-content"><div id="johto-grid" class="pokemon-grid"></div></div>
+            </div>
+
+            <div class="region-block" data-region="hoenn">
+                <div class="section-header color-region" onclick="toggleSection(this, 'tab-oferuje')"><h3 class="section-title">🌊 Hoenn Region</h3><span class="collapse-arrow">▼</span></div>
+                <div class="collapsible-content"><div id="hoenn-grid" class="pokemon-grid"></div></div>
+            </div>
+
+            <div class="region-block" data-region="sinnoh">
+                <div class="section-header color-region" onclick="toggleSection(this, 'tab-oferuje')"><h3 class="section-title">🏔️ Sinnoh Region</h3><span class="collapse-arrow">▼</span></div>
+                <div class="collapsible-content"><div id="sinnoh-grid" class="pokemon-grid"></div></div>
+            </div>
+
+            <div class="region-block" data-region="unova">
+                <div class="section-header color-region" onclick="toggleSection(this, 'tab-oferuje')"><h3 class="section-title">🏙️ Unova Region</h3><span class="collapse-arrow">▼</span></div>
+                <div class="collapsible-content"><div id="unova-grid" class="pokemon-grid"></div></div>
+            </div>
+
+            <div class="region-block" data-region="kalos">
+                <div class="section-header color-region" onclick="toggleSection(this, 'tab-oferuje')"><h3 class="section-title">🏰 Kalos Region</h3><span class="collapse-arrow">▼</span></div>
+                <div class="collapsible-content"><div id="kalos-grid" class="pokemon-grid"></div></div>
+            </div>
+
+            <div class="region-block" data-region="alola">
+                <div class="section-header color-region" onclick="toggleSection(this, 'tab-oferuje')"><h3 class="section-title">☀️ Alola Region</h3><span class="collapse-arrow">▼</span></div>
+                <div class="collapsible-content"><div id="alola-grid" class="pokemon-grid"></div></div>
+            </div>
+
+            <div class="region-block" data-region="galar">
+                <div class="section-header color-region" onclick="toggleSection(this, 'tab-oferuje')"><h3 class="section-title">🛡️ Galar Region</h3><span class="collapse-arrow">▼</span></div>
+                <div class="collapsible-content"><div id="galar-grid" class="pokemon-grid"></div></div>
+            </div>
+
+            <div class="region-block" data-region="paldea">
+                <div class="section-header color-region" onclick="toggleSection(this, 'tab-oferuje')"><h3 class="section-title">🍇 Paldea Region</h3><span class="collapse-arrow">▼</span></div>
+                <div class="collapsible-content"><div id="paldea-grid" class="pokemon-grid"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="szukam.js"></script>
+    <script src="oferuje.js"></script>
 
     <script>
-       // ==========================================
-        // TWOJE AKTUALNE LISTY POKEMONÓW:
-        // ==========================================
-        
-        const pveShiny = [
-            "heracross", 
-            "larvesta", 
-            "kartana", 
-            "xurkitree", 
-            "snorunt"
-        ];
+	// WYŁĄCZONE AUTO-ZWIJANIE: Każda sekcja działa niezależnie
+function toggleSection(headerElement) {
+    // Przełączamy klasę 'active' tylko na klikniętym elemencie
+    headerElement.classList.toggle('active');
+}
+        // AKORDEON: MECHANIZM ZWIJANIA I ROZWIJANIA JEDNEJ LISTY NARAZ
+      //  function toggleSection(headerElement, currentTabId) {
+      //     const isAlreadyExpanded = headerElement.classList.contains('expanded');
+            
+            // Znajdź i zwiń wszystkie aktywne sekcje w obrębie bieżącej zakładki
+      //     const container = document.getElementById(currentTabId);
+      //     const allHeaders = container.querySelectorAll('.section-header');
+            
+     //       allHeaders.forEach(h => {
+       //         h.classList.remove('expanded');
+       //     });
+//
+            // Jeśli kliknięta sekcja nie była rozwinięta, rozwiń ją
+       //     if (!isAlreadyExpanded) {
+      //          headerElement.classList.add('expanded');
+      //      }
+     //   }
 
-        const pveLegacy = [
-            "landorus-therian", 
-            "reshiram", 
-            "heatran", 
-            "kyogre", 
-            "zekrom", 
-            "palkia-origin"
-        ];
-
-        const pveShinyLegacy = [
-            "rhyperior", 
-            "reshiram", 
-            "heatran", 
-            "swampert", 
-            "mewtwo", 
-            "rayquaza", 
-            "palkia-origin", 
-            "alakazam"
-        ];
-
-        const pveNormal = [
-            "nihilego", 
-            "larvesta", 
-            "kartana", 
-            "xurkitree"
-        ];
-
-        const others = [
-            "carnivine", 
-            "rotom", 
-            "larvesta", 
-            "bombirdier", 
-            "litleo", 
-            "binacle", 
-            "golett", 
-            "capsakid", 
-            "glimmet", 
-            "tatsugiri", 
-            "frigibax"
-        ];
-
-        const unowns = ["b", "c", "f", "j", "p", "q", "t", "x", "z"];
-
-        // ==========================================
-
-        function generate(list, gridId, stringId, prefix, forceShiny = false, isUnown = false) {
+        // GENERATE WISHLIST TAB MECHANICS
+        function generate(targetCategory, gridId, stringId, prefix) {
             const grid = document.getElementById(gridId);
             if (!grid) return;
-            
+
+            if (typeof listaSzukam === 'undefined') {
+                grid.innerHTML = "<p style='color: #e74c3c;'>Error: Data missing in szukam.js</p>";
+                return;
+            }
+
             const namesForString = [];
-            
-            list.forEach(name => {
-                const isShiny = forceShiny || name.toLowerCase().startsWith("shiny ");
-                const cleanName = isShiny && !forceShiny ? name.substring(6).trim() : name.trim();
+            const filteredList = listaSzukam.filter(poko => poko.category === targetCategory);
+
+            filteredList.forEach(poko => {
+                const isUnown = (poko.category === 'unown');
+                const nameForSearch = isUnown ? "unown" : poko.name.split('-')[0].toLowerCase();
                 
-                // --- LOGIKA FORM DLA STRINGA DO GRY ---
-                // Jeśli nazwa to np. "palkia-origin", do gry trafi tylko "palkia"
-                const nameForSearch = isUnown ? "unown" : cleanName.split('-')[0].toLowerCase();
                 if(!namesForString.includes(nameForSearch)) {
                     namesForString.push(nameForSearch);
                 }
 
-                // --- LOGIKA NAZWY WYŚWIETLANEJ NA STRONIE ---
-                // Usuwamy dopiski po myślniku dla ładniejszego wyglądu (Palkia Origin -> Palkia)
-                const displayName = isUnown ? 'Unown ' + cleanName.toUpperCase() : cleanName.split('-')[0];
-
-                const folder = isShiny ? "shiny" : "normal";
-                let imgUrl = `https://img.pokemondb.net/sprites/home/${folder}/${cleanName.toLowerCase()}.png`;
-                if(isUnown) imgUrl = `https://img.pokemondb.net/sprites/home/shiny/unown-${cleanName.toLowerCase()}.png`;
+                const displayName = isUnown ? 'Unown ' + poko.name.toUpperCase() : poko.name.split('-')[0];
+                const folder = poko.isShiny ? "shiny" : "normal";
+                
+                let imgUrl = `https://img.pokemondb.net/sprites/home/${folder}/${poko.name.toLowerCase()}.png`;
+                if(isUnown) {
+                    imgUrl = `https://img.pokemondb.net/sprites/home/shiny/unown-${poko.name.toLowerCase()}.png`;
+                }
 
                 const card = document.createElement('div');
                 card.className = 'pokemon-card';
                 card.innerHTML = `
-                    <img src="${imgUrl}" alt="${cleanName}" onerror="this.src='https://img.pokemondb.net/sprites/sword-shield/icon/${nameForSearch}.png';">
-                    <div class="pokemon-name">${isShiny ? '✨ ' : ''}${displayName}</div>
-                    ${isShiny ? '<span class="badge-shiny">SHINY</span>' : ''}
+                    <img src="${imgUrl}" alt="${poko.name}" onerror="this.src='https://img.pokemondb.net/sprites/sword-shield/icon/${nameForSearch}.png';">
+                    <div class="pokemon-name">${poko.isShiny ? '✨ ' : ''}${displayName}</div>
                 `;
                 grid.appendChild(card);
             });
+            
+            document.getElementById(stringId).value = `${prefix}${[...new Set(namesForString)].join(',')}`;
+        }
 
-            const uniqueNames = [...new Set(namesForString)];
-            document.getElementById(stringId).value = `${prefix}${uniqueNames.join(',')}`;
+      // GENERATE OFFER TAB MECHANICS (100% PERFECT FOR REGIONALS & COSTUMES VIA POGO SERVERS)
+        // GENERATE OFFER TAB MECHANICS (STABLE VERSION)
+        function generateOfferTab() {
+        let totalCount = 0;
+        if (typeof myShinyCollection === 'undefined') return;
+
+        // Sortowanie całej kolekcji po National Dex ID
+        myShinyCollection.sort((a, b) => a.id - b.id);
+
+        myShinyCollection.forEach(poko => {
+            totalCount += poko.count;
+            const grid = document.getElementById(`${poko.region}-grid`);
+            if (!grid) return;
+
+            // Logika obrazka (zachowana stabilna wersja z poprzedniego kroku)
+            let imgKey = poko.name.toLowerCase();
+            if (poko.type === 'costume') imgKey = poko.name.split('-')[0];
+            
+            let imgUrl = `https://img.pokemondb.net/sprites/home/shiny/${imgKey}.png`;
+            const displayKey = poko.displayName ? poko.displayName : poko.name;
+
+            // Logika ikon
+            let prefix = '';
+            const isShiny = (poko.isShiny !== undefined) ? poko.isShiny : true;
+            if (isShiny) prefix += '✨ ';
+            if (poko.type === 'costume') prefix += '🤠 ';
+
+            const card = document.createElement('div');
+            card.className = 'pokemon-card';
+            card.setAttribute('data-type', poko.type);
+            card.innerHTML = `
+                <div class="count-badge">${poko.count}</div>
+                <img src="${imgUrl}" alt="${displayKey}" style="min-height: 80px;" onerror="this.onerror=null; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';">
+                <div class="pokemon-name">${prefix}${displayKey}</div>
+            `;
+            grid.appendChild(card);
+        });
+
+        document.getElementById('total-sum').innerText = `Total Pokémon available: ${totalCount}`;
+    }
+		// Definicja zakresów pokedexu dla regionów
+		const regionThresholds = [
+			{ name: "kanto", label: "🗻 Kanto Region", min: 1, max: 151 },
+			{ name: "johto", label: "🌲 Johto Region", min: 152, max: 251 },
+			{ name: "hoenn", label: "🌊 Hoenn Region", min: 252, max: 386 },
+			{ name: "sinnoh", label: "🏔️ Sinnoh Region", min: 387, max: 493 },
+			{ name: "unova", label: "🏙️ Unova Region", min: 494, max: 649 },
+			{ name: "kalos", label: "🏰 Kalos Region", min: 650, max: 721 },
+			{ name: "alola", label: "☀️ Alola Region", min: 722, max: 809 },
+			{ name: "galar", label: "🛡️ Galar Region", min: 810, max: 905 },
+			{ name: "paldea", label: "🍇 Paldea Region", min: 906, max: 9999 }
+		];
+
+        // FILTER OFFER BUTTON FUNCTIONALITY
+        function filterOffer(type, button) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const cards = document.querySelectorAll('#my-offer-grid-container .pokemon-card');
+            cards.forEach(card => {
+                const cardType = card.getAttribute('data-type');
+                if (type === 'all' || cardType === type) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.querySelectorAll('.region-block').forEach(block => {
+                const visibleCards = block.querySelectorAll('.pokemon-card:not([style*="display: none"])');
+                if (visibleCards.length === 0) {
+                    block.style.display = 'none';
+                } else {
+                    block.style.display = '';
+                }
+            });
+        }
+
+        // ZMIANA ZAKŁADEK (DODATKOWO ZWIJA LISTY PRZY PRZEŁĄCZENIU)
+        function switchTab(tabId, button) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Przy przełączaniu zakładek zamknij wszystkie otwarte sekcje
+            document.querySelectorAll('.section-header').forEach(h => h.classList.remove('expanded'));
+
+            document.getElementById(tabId).classList.add('active');
+            button.classList.add('active');
         }
 
         function copyString(id, btn) {
             const el = document.getElementById(id);
             navigator.clipboard.writeText(el.value);
-            const old = btn.innerText;
-            btn.innerText = "OK!";
+            const old = btn.innerText; btn.innerText = "COPIED!";
             setTimeout(() => btn.innerText = old, 1500);
         }
+		
 
-        // INICJALIZACJA - Teraz wszystkie ID się zgadzają
-        generate(pveShiny, 'pve-shiny-grid', 'pve-shiny-str', '!traded&shiny&', true);
-        generate(pveLegacy, 'pve-legacy-grid', 'pve-legacy-str', '!traded&@special&');
-        generate(pveShinyLegacy, 'pve-both-grid', 'pve-both-str', '!traded&@special&shiny&', true);
-        generate(pveNormal, 'pve-normal-grid', 'pve-normal-str', '!traded&');
-        generate(others, 'others-grid', 'others-str', '!traded&', true);
-        generate(unowns, 'unown-grid', 'unown-str', '!traded&shiny&unown', true, true);
+        // INITIALIZATION
+        generate('pve-shiny', 'pve-shiny-grid', 'pve-shiny-str', '!traded&shiny&');
+        generate('pve-legacy', 'pve-legacy-grid', 'pve-legacy-str', '!traded&@special&');
+        generate('pve-shiny-legacy', 'pve-both-grid', 'pve-both-str', '!traded&@special&shiny&');
+        generate('pve-normal', 'pve-normal-grid', 'pve-normal-str', '!traded&');
+        generate('others', 'others-grid', 'others-str', '!traded&shiny&');
+        generate('unown', 'unown-grid', 'unown-str', '!traded&shiny&unown');
+        
+        generateOfferTab();
     </script>
+	
 </body>
 </html>
