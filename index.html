@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moja Lista Wymian PoGo</title>
+    <title>GlupekzRivii Lucky Trade</title>
     <style>
         body {
             font-family: 'Segoe UI', Roboto, sans-serif;
@@ -18,201 +18,270 @@
 
         h1 {
             color: #f1c40f;
-            margin-bottom: 5px;
-            text-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
-        }
-
-        .subtitle {
-            color: #aaa;
-            margin-top: 0;
+            margin-top: 20px;
             margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
+            font-size: 28px;
+            text-align: center;
         }
 
-        /* Wyszukiwarka */
-        .search-container {
-            width: 100%;
-            max-width: 500px;
-            margin-bottom: 40px;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 12px 20px;
-            background-color: #1a1a1e;
-            border: 2px solid #2c2c35;
-            border-radius: 25px;
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
-            box-sizing: border-box;
-        }
-
-        .search-box:focus {
-            border-color: #f1c40f;
-        }
-
-        /* Sekcje list */
         .section-title {
             width: 100%;
             max-width: 900px;
-            font-size: 22px;
+            font-size: 20px;
             border-bottom: 2px solid #2c2c35;
             padding-bottom: 8px;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            margin-top: 40px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .lucky-title { color: #f1c40f; }
-        .trade-title { color: #3498db; }
+        /* Kolory sekcji */
+        .color-pve-shiny { color: #f39c12; }
+        .color-pve-legacy { color: #e74c3c; }
+        .color-pve-both { color: #9b59b6; }
+        .color-pve-normal { color: #3498db; }
+        .color-others { color: #95a5a6; }
+        .color-unown { color: #1abc9c; }
 
-        /* Siatka (Grid) */
+        .string-container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            background-color: #1a1a1e;
+            border: 1px solid #2c2c35;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .string-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 15px;
+            color: #888;
+            font-family: monospace;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .copy-btn {
+            background-color: #2c2c35;
+            border: none;
+            color: white;
+            padding: 0 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+            transition: background-color 0.2s;
+        }
+
+        .copy-btn:hover { background-color: #444; }
+
         .pokemon-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 15px;
             width: 100%;
             max-width: 900px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
-        /* Karta Pokemona */
         .pokemon-card {
             background-color: #1a1a1e;
             border: 1px solid #2c2c35;
             border-radius: 12px;
-            padding: 15px 10px;
+            padding: 10px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            transition: transform 0.2s, border-color 0.2s;
+            transition: transform 0.2s;
         }
 
-        .pokemon-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .lucky-grid .pokemon-card:hover { border-color: #f1c40f; }
-        .trade-grid .pokemon-card:hover { border-color: #3498db; }
+        .pokemon-card:hover { transform: translateY(-3px); border-color: #f1c40f; }
 
         .pokemon-card img {
-            width: 85px;
-            height: 85px;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
-            margin-bottom: 10px;
         }
 
         .pokemon-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            margin: 5px 0;
+            margin-top: 8px;
             text-transform: capitalize;
         }
 
-        /* Etykiety */
-        .badge {
+        .badge-shiny {
             display: inline-block;
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-weight: bold;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #f39c12, #d35400);
             margin-top: 5px;
+            color: white;
         }
-
-        .badge-shiny { background: linear-gradient(45deg, #f39c12, #d35400); color: white; }
-        .badge-lucky { background: linear-gradient(45deg, #f1c40f, #e67e22); color: #121214; }
-        .badge-trade { background: linear-gradient(45deg, #3498db, #2980b9); color: white; }
     </style>
 </head>
 <body>
 
-    <h1>POKEMON GO TRADES</h1>
-    <p class="subtitle">Moja lista poszukiwanych Pokemonów</p>
+    <h1>GlupekzRivii Lucky Trade</h1>
 
-    <div class="search-container">
-        <input type="text" id="search" class="search-box" placeholder="Filtruj Pokemony...">
+    <div class="section-title color-pve-shiny">✨ PvE Shiny</div>
+    <div class="string-container">
+        <input type="text" id="pve-shiny-str" class="string-input" readonly>
+        <button class="copy-btn" onclick="copyString('pve-shiny-str', this)">Kopiuj</button>
     </div>
+    <div id="pve-shiny-grid" class="pokemon-grid"></div>
 
-    <div class="section-title lucky-title">🍀 Poszukuję do Lucky Trade</div>
-    <div class="pokemon-grid lucky-grid" id="lucky-grid"></div>
+    <div class="section-title color-pve-legacy">🎒 PvE Legacy Attack</div>
+    <div class="string-container">
+        <input type="text" id="pve-legacy-str" class="string-input" readonly>
+        <button class="copy-btn" onclick="copyString('pve-legacy-str', this)">Kopiuj</button>
+    </div>
+    <div id="pve-legacy-grid" class="pokemon-grid"></div>
 
-    <div class="section-title trade-title">🔄 Poszukuję do Zwykłego Trade</div>
-    <div class="pokemon-grid trade-grid" id="trade-grid"></div>
+    <div class="section-title color-pve-both">🌟 PvE Shiny Legacy</div>
+    <div class="string-container">
+        <input type="text" id="pve-both-str" class="string-input" readonly>
+        <button class="copy-btn" onclick="copyString('pve-both-str', this)">Kopiuj</button>
+    </div>
+    <div id="pve-both-grid" class="pokemon-grid"></div>
+
+    <div class="section-title color-pve-normal">⚔️ PvE Normal</div>
+    <div class="string-container">
+        <input type="text" id="pve-normal-str" class="string-input" readonly>
+        <button class="copy-btn" onclick="copyString('pve-normal-str', this)">Kopiuj</button>
+    </div>
+    <div id="pve-normal-grid" class="pokemon-grid"></div>
+
+    <div class="section-title color-others">📁 Pozostałe</div>
+    <div class="string-container">
+        <input type="text" id="others-str" class="string-input" readonly>
+        <button class="copy-btn" onclick="copyString('others-str', this)">Kopiuj</button>
+    </div>
+    <div id="others-grid" class="pokemon-grid"></div>
+
+    <div class="section-title color-unown">🔤 Unown Shiny</div>
+    <div class="string-container">
+        <input type="text" id="unown-str" class="string-input" readonly>
+        <button class="copy-btn" onclick="copyString('unown-str', this)">Kopiuj</button>
+    </div>
+    <div id="unown-grid" class="pokemon-grid"></div>
 
     <script>
-        // ==========================================
-        // TUTAJ WPISUJESZ SWOJE POKEMONY:
-        // Jeśli chcesz wersję Shiny, dopisz "shiny " przed nazwą.
-        // Nazwy wpisuj po angielsku, małymi literami.
+       // ==========================================
+        // TWOJE AKTUALNE LISTY POKEMONÓW:
         // ==========================================
         
-        const luckyList = [
-            "shiny rayquaza",
-            "mewtwo",
-            "shiny lucario",
-            "garchomp"
+        const pveShiny = [
+            "heracross", 
+            "larvesta", 
+            "kartana", 
+            "xurkitree", 
+            "snorunt"
         ];
 
-        const tradeList = [
-            "bagon",
-            "shiny beldum",
-            "palkia",
-            "dialga"
+        const pveLegacy = [
+            "landorus-therian", 
+            "reshiram", 
+            "heatran", 
+            "kyogre", 
+            "zekrom", 
+            "palkia-origin"
         ];
 
-        // ==========================================
-        // KOD GENERUJĄCY STRONĘ (Automatyczne obrazki)
+        const pveShinyLegacy = [
+            "rhyperior", 
+            "reshiram", 
+            "heatran", 
+            "swampert", 
+            "mewtwo", 
+            "rayquaza", 
+            "palkia-origin", 
+            "alakazam"
+        ];
+
+        const pveNormal = [
+            "nihilego", 
+            "larvesta", 
+            "kartana", 
+            "xurkitree"
+        ];
+
+        const others = [
+            "carnivine", 
+            "rotom", 
+            "larvesta", 
+            "bombirdier", 
+            "litleo", 
+            "binacle", 
+            "golett", 
+            "capsakid", 
+            "glimmet", 
+            "tatsugiri", 
+            "frigibax"
+        ];
+
+        const unowns = ["b", "c", "f", "j", "p", "q", "t", "x", "z"];
+
         // ==========================================
 
-        function generateGrid(list, gridId, type) {
+        function generate(list, gridId, stringId, prefix, forceShiny = false, isUnown = false) {
             const grid = document.getElementById(gridId);
+            if (!grid) return;
             
-            list.forEach(pokemonRaw => {
-                const isShiny = pokemonRaw.toLowerCase().startsWith("shiny ");
-                // Wyciągamy czystą nazwę bez słowa "shiny "
-                const pokemonName = isShiny ? pokemonRaw.substring(6).trim() : pokemonRaw.trim();
+            const namesForString = [];
+            
+            list.forEach(name => {
+                const isShiny = forceShiny || name.toLowerCase().startsWith("shiny ");
+                const cleanName = isShiny && !forceShiny ? name.substring(6).trim() : name.trim();
                 
-                // Link do oficjalnego repozytorium z grafikami z Pokemon Home
-                const imgFolder = isShiny ? "shiny" : "normal";
-                const imgUrl = `https://img.pokemondb.net/sprites/home/${imgFolder}/${pokemonName.toLowerCase()}.png`;
+                // --- LOGIKA FORM DLA STRINGA DO GRY ---
+                // Jeśli nazwa to np. "palkia-origin", do gry trafi tylko "palkia"
+                const nameForSearch = isUnown ? "unown" : cleanName.split('-')[0].toLowerCase();
+                if(!namesForString.includes(nameForSearch)) {
+                    namesForString.push(nameForSearch);
+                }
 
-                // Tworzenie karty HTML
+                // --- LOGIKA NAZWY WYŚWIETLANEJ NA STRONIE ---
+                // Usuwamy dopiski po myślniku dla ładniejszego wyglądu (Palkia Origin -> Palkia)
+                const displayName = isUnown ? 'Unown ' + cleanName.toUpperCase() : cleanName.split('-')[0];
+
+                const folder = isShiny ? "shiny" : "normal";
+                let imgUrl = `https://img.pokemondb.net/sprites/home/${folder}/${cleanName.toLowerCase()}.png`;
+                if(isUnown) imgUrl = `https://img.pokemondb.net/sprites/home/shiny/unown-${cleanName.toLowerCase()}.png`;
+
                 const card = document.createElement('div');
                 card.className = 'pokemon-card';
-                card.setAttribute('data-name', pokemonRaw.toLowerCase());
-
                 card.innerHTML = `
-                    <img src="${imgUrl}" alt="${pokemonName}" onerror="this.src='https://img.pokemondb.net/sprites/sword-shield/icon/${pokemonName}.png';">
-                    <div class="pokemon-name">${isShiny ? '✨ ' : ''}${pokemonName}</div>
-                    ${isShiny ? '<span class="badge badge-shiny">✨ SHINY</span>' : ''}
-                    <span class="badge ${type === 'lucky' ? 'badge-lucky' : 'badge-trade'}">
-                        ${type === 'lucky' ? '🍀 LUCKY' : '🔄 TRADE'}
-                    </span>
+                    <img src="${imgUrl}" alt="${cleanName}" onerror="this.src='https://img.pokemondb.net/sprites/sword-shield/icon/${nameForSearch}.png';">
+                    <div class="pokemon-name">${isShiny ? '✨ ' : ''}${displayName}</div>
+                    ${isShiny ? '<span class="badge-shiny">SHINY</span>' : ''}
                 `;
-                
                 grid.appendChild(card);
             });
+
+            const uniqueNames = [...new Set(namesForString)];
+            document.getElementById(stringId).value = `${prefix}${uniqueNames.join(',')}`;
         }
 
-        // Uruchomienie generowania dla obu list
-        generateGrid(luckyList, 'lucky-grid', 'lucky');
-        generateGrid(tradeList, 'trade-grid', 'trade');
+        function copyString(id, btn) {
+            const el = document.getElementById(id);
+            navigator.clipboard.writeText(el.value);
+            const old = btn.innerText;
+            btn.innerText = "OK!";
+            setTimeout(() => btn.innerText = old, 1500);
+        }
 
-        // Obsługa wyszukiwarki
-        document.getElementById('search').addEventListener('input', (e) => {
-            const value = e.target.value.toLowerCase().trim();
-            const cards = document.querySelectorAll('.pokemon-card');
-
-            cards.forEach(card => {
-                const name = card.getAttribute('data-name');
-                if (name.includes(value)) {
-                    card.style.style.display = ''; // Pokaż
-                } else {
-                    card.style.display = 'none'; // Ukryj
-                }
-            });
-        });
+        // INICJALIZACJA - Teraz wszystkie ID się zgadzają
+        generate(pveShiny, 'pve-shiny-grid', 'pve-shiny-str', '!traded&shiny&', true);
+        generate(pveLegacy, 'pve-legacy-grid', 'pve-legacy-str', '!traded&@special&');
+        generate(pveShinyLegacy, 'pve-both-grid', 'pve-both-str', '!traded&@special&shiny&', true);
+        generate(pveNormal, 'pve-normal-grid', 'pve-normal-str', '!traded&');
+        generate(others, 'others-grid', 'others-str', '!traded&', true);
+        generate(unowns, 'unown-grid', 'unown-str', '!traded&shiny&unown', true, true);
     </script>
 </body>
 </html>
