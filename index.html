@@ -1,11 +1,218 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucky Pokemon Go</title>
+    <title>Moja Lista Wymian PoGo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: #121214;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #f1c40f;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
+        }
+
+        .subtitle {
+            color: #aaa;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+
+        /* Wyszukiwarka */
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 20px;
+            background-color: #1a1a1e;
+            border: 2px solid #2c2c35;
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .search-box:focus {
+            border-color: #f1c40f;
+        }
+
+        /* Sekcje list */
+        .section-title {
+            width: 100%;
+            max-width: 900px;
+            font-size: 22px;
+            border-bottom: 2px solid #2c2c35;
+            padding-bottom: 8px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .lucky-title { color: #f1c40f; }
+        .trade-title { color: #3498db; }
+
+        /* Siatka (Grid) */
+        .pokemon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 40px;
+        }
+
+        /* Karta Pokemona */
+        .pokemon-card {
+            background-color: #1a1a1e;
+            border: 1px solid #2c2c35;
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .pokemon-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .lucky-grid .pokemon-card:hover { border-color: #f1c40f; }
+        .trade-grid .pokemon-card:hover { border-color: #3498db; }
+
+        .pokemon-card img {
+            width: 85px;
+            height: 85px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .pokemon-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px 0;
+            text-transform: capitalize;
+        }
+
+        /* Etykiety */
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .badge-shiny { background: linear-gradient(45deg, #f39c12, #d35400); color: white; }
+        .badge-lucky { background: linear-gradient(45deg, #f1c40f, #e67e22); color: #121214; }
+        .badge-trade { background: linear-gradient(45deg, #3498db, #2980b9); color: white; }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Lucky Pokemon Go</h1>
+
+    <h1>POKEMON GO TRADES</h1>
+    <p class="subtitle">Moja lista poszukiwanych Pokemonów</p>
+
+    <div class="search-container">
+        <input type="text" id="search" class="search-box" placeholder="Filtruj Pokemony...">
+    </div>
+
+    <div class="section-title lucky-title">🍀 Poszukuję do Lucky Trade</div>
+    <div class="pokemon-grid lucky-grid" id="lucky-grid"></div>
+
+    <div class="section-title trade-title">🔄 Poszukuję do Zwykłego Trade</div>
+    <div class="pokemon-grid trade-grid" id="trade-grid"></div>
+
+    <script>
+        // ==========================================
+        // TUTAJ WPISUJESZ SWOJE POKEMONY:
+        // Jeśli chcesz wersję Shiny, dopisz "shiny " przed nazwą.
+        // Nazwy wpisuj po angielsku, małymi literami.
+        // ==========================================
+        
+        const luckyList = [
+            "shiny rayquaza",
+            "mewtwo",
+            "shiny lucario",
+            "garchomp"
+        ];
+
+        const tradeList = [
+            "bagon",
+            "shiny beldum",
+            "palkia",
+            "dialga"
+        ];
+
+        // ==========================================
+        // KOD GENERUJĄCY STRONĘ (Automatyczne obrazki)
+        // ==========================================
+
+        function generateGrid(list, gridId, type) {
+            const grid = document.getElementById(gridId);
+            
+            list.forEach(pokemonRaw => {
+                const isShiny = pokemonRaw.toLowerCase().startsWith("shiny ");
+                // Wyciągamy czystą nazwę bez słowa "shiny "
+                const pokemonName = isShiny ? pokemonRaw.substring(6).trim() : pokemonRaw.trim();
+                
+                // Link do oficjalnego repozytorium z grafikami z Pokemon Home
+                const imgFolder = isShiny ? "shiny" : "normal";
+                const imgUrl = `https://img.pokemondb.net/sprites/home/${imgFolder}/${pokemonName.toLowerCase()}.png`;
+
+                // Tworzenie karty HTML
+                const card = document.createElement('div');
+                card.className = 'pokemon-card';
+                card.setAttribute('data-name', pokemonRaw.toLowerCase());
+
+                card.innerHTML = `
+                    <img src="${imgUrl}" alt="${pokemonName}" onerror="this.src='https://img.pokemondb.net/sprites/sword-shield/icon/${pokemonName}.png';">
+                    <div class="pokemon-name">${isShiny ? '✨ ' : ''}${pokemonName}</div>
+                    ${isShiny ? '<span class="badge badge-shiny">✨ SHINY</span>' : ''}
+                    <span class="badge ${type === 'lucky' ? 'badge-lucky' : 'badge-trade'}">
+                        ${type === 'lucky' ? '🍀 LUCKY' : '🔄 TRADE'}
+                    </span>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Uruchomienie generowania dla obu list
+        generateGrid(luckyList, 'lucky-grid', 'lucky');
+        generateGrid(tradeList, 'trade-grid', 'trade');
+
+        // Obsługa wyszukiwarki
+        document.getElementById('search').addEventListener('input', (e) => {
+            const value = e.target.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.pokemon-card');
+
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name');
+                if (name.includes(value)) {
+                    card.style.style.display = ''; // Pokaż
+                } else {
+                    card.style.display = 'none'; // Ukryj
+                }
+            });
+        });
+    </script>
 </body>
 </html>
