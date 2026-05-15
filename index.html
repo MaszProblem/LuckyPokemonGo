@@ -387,10 +387,81 @@
         </div>
     </div>
 
-    <script src="szukam.js"></script>
-    <script src="oferuje.js"></script>
 
     <script>
+	
+	// CONFIGURATION: Wpisz tutaj dane swojego arkusza Google
+const SPREADSHEET_ID = '1S2YVZOPnkP7AtgfhdDK3OrDOmtaGo6qsmKHMAxp8vfo';
+const WISHLIST_GID = '0';          // GID zakładki z Wishlist (pierwsza karta ma zazwyczaj 0)
+const OFFER_GID = '1184870881';     // GID zakładki z Offer
+
+// Funkcja pobierająca dane CSV z Google Sheets i parsująca je na obiekty JS
+async function fetchSheetData(gid) {
+    const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${gid}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Nie udało się pobrać danych dla zakładki o GID: ${gid}`);
+    }
+    const csvText = await response.text();
+    return parseCSV(csvText);
+}
+
+// Uniwersalny parser CSV obsługujący konwersję typów (String -> Boolean/Number)
+function parseCSV(text) {
+    const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+    if (lines.length === 0) return [];
+
+    // Pobranie nagłówków z pierwszego wiersza
+    const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
+
+    return lines.slice(1).map(line => {
+        const values = line.split(',').map(v => v.replace(/^"|"$/g, '').trim());
+        const obj = {};
+
+        headers.forEach((header, index) => {
+            let val = values[index] !== undefined ? values[index] : '';
+
+            // Automatyczna konwersja stringów na typy logiczne i liczbowe
+            if (val.toLowerCase() === 'true') val = true;
+            else if (val.toLowerCase() === 'false') val = false;
+            else if (!isNaN(val) && val !== '') val = Number(val);
+
+            obj[header] = val;
+        });
+        return obj;
+    });
+}
+
+// Główna funkcja inicjalizująca cykl życia strony
+async function initApplication() {
+    try {
+        // Asynchroniczne pobranie danych z Google Sheets do zmiennych globalnych aplikacji
+        window.listaSzukam = await fetchSheetData(WISHLIST_GID);
+        window.myShinyCollection = await fetchSheetData(OFFER_GID);
+
+        // Inicjalizacja generowania widoków (funkcje z Twojego obecnego kodu)
+        generate('pve-shiny', 'pve-shiny-grid', 'pve-shiny-str', '!traded&shiny&');
+        generate('pve-legacy', 'pve-legacy-grid', 'pve-legacy-str', '!traded&@special&');
+        generate('pve-shiny-legacy', 'pve-both-grid', 'pve-both-str', '!traded&@special&shiny&');
+        generate('pve-normal', 'pve-normal-grid', 'pve-normal-str', '!traded&');
+        generate('others', 'others-grid', 'others-str', '!traded&shiny&');
+        generate('unown', 'unown-grid', 'unown-str', '!traded&shiny&unown');
+        
+        generateOfferTab();
+    } catch (error) {
+        console.error("Critical error initialization:", error);
+        const totalSumBadge = document.getElementById('total-sum');
+        if (totalSumBadge) {
+            totalSumBadge.innerText = "Error loading data from Google Sheets!";
+            totalSumBadge.style.color = "#e74c3c";
+        }
+    }
+}
+
+// Uruchomienie aplikacji po załadowaniu drzewa DOM
+document.addEventListener('DOMContentLoaded', initApplication);
+	
+	
 	// WYŁĄCZONE AUTO-ZWIJANIE: Każda sekcja działa niezależnie
 function toggleSection(headerElement) {
     // Przełączamy klasę 'active' tylko na klikniętym elemencie
@@ -554,15 +625,15 @@ function toggleSection(headerElement) {
 		
 
         // INITIALIZATION
-        generate('pve-shiny', 'pve-shiny-grid', 'pve-shiny-str', '!traded&shiny&');
-        generate('pve-legacy', 'pve-legacy-grid', 'pve-legacy-str', '!traded&@special&');
-        generate('pve-shiny-legacy', 'pve-both-grid', 'pve-both-str', '!traded&@special&shiny&');
-        generate('pve-normal', 'pve-normal-grid', 'pve-normal-str', '!traded&');
-        generate('others', 'others-grid', 'others-str', '!traded&shiny&');
-        generate('unown', 'unown-grid', 'unown-str', '!traded&shiny&unown');
+        //generate('pve-shiny', 'pve-shiny-grid', 'pve-shiny-str', '!traded&shiny&');
+       // generate('pve-legacy', 'pve-legacy-grid', 'pve-legacy-str', '!traded&@special&');
+        //generate('pve-shiny-legacy', 'pve-both-grid', 'pve-both-str', '!traded&@special&shiny&');
+        //generate('pve-normal', 'pve-normal-grid', 'pve-normal-str', '!traded&');
+       // generate('others', 'others-grid', 'others-str', '!traded&shiny&');
+        //generate('unown', 'unown-grid', 'unown-str', '!traded&shiny&unown');
         
-        generateOfferTab();
-    </script>
+       // generateOfferTab();
+	   initApplication();
 	
 </body>
 </html>
