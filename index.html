@@ -492,53 +492,116 @@
             
             document.getElementById(stringId).value = `${prefix}${[...new Set(namesForString)].join(',')}`;
         }
+// BRAMKA LOGICZNA DLA FORM REGIONALNYCH I SPECJALNYCH
+const regionalImageMap = {
+    // KANTO REGIONALS
+    "rattata-alola": "https://img.pokemondb.net/sprites/home/shiny/rattata-alolan.png",
+    "sandshrew-alola": "https://img.pokemondb.net/sprites/home/shiny/sandshrew-alolan.png",
+    "vulpix-alola": "https://img.pokemondb.net/sprites/home/shiny/vulpix-alolan.png",
+    "diglett-alola": "https://img.pokemondb.net/sprites/home/shiny/diglett-alolan.png",
+    "meowth-alola": "https://img.pokemondb.net/sprites/home/shiny/meowth-alolan.png",
+    "meowth-galar": "https://img.pokemondb.net/sprites/home/shiny/meowth-galarian.png",
+    "growlithe-hisui": "https://img.pokemondb.net/sprites/home/shiny/growlithe-hisuian.png",
+    "geodude-alola": "https://img.pokemondb.net/sprites/home/shiny/geodude-alolan.png",
+    "ponyta-galar": "https://img.pokemondb.net/sprites/home/shiny/ponyta-galarian.png",
+    "slowpoke-galar": "https://img.pokemondb.net/sprites/home/shiny/slowpoke-galarian.png",
+    "farfetchd-galar": "https://img.pokemondb.net/sprites/home/shiny/farfetchd-galarian.png",
+    "grimer-alola": "https://img.pokemondb.net/sprites/home/shiny/grimer-alolan.png",
+    "exeggutor-alola": "https://img.pokemondb.net/sprites/home/shiny/exeggutor-alolan.png",
+    "marowak-alola": "https://img.pokemondb.net/sprites/home/shiny/marowak-alolan.png",
 
-        function generateOfferTab() {
-            let totalCount = 0;
-            if (typeof myShinyCollection === 'undefined') return;
+    // JOHTO REGIONALS
+    "qwilfish-hisui": "https://img.pokemondb.net/sprites/home/shiny/qwilfish-hisuian.png",
+    "sneasel-hisui": "https://img.pokemondb.net/sprites/home/shiny/sneasel-hisuian.png",
+    "wooper-paldea": "https://img.pokemondb.net/sprites/home/shiny/wooper-paldean.png",
 
-            document.querySelectorAll('#my-offer-grid-container .pokemon-grid').forEach(grid => grid.innerHTML = '');
+    // OTHERS / SPECIAL
+    "yamask-galar": "https://img.pokemondb.net/sprites/home/shiny/yamask-galarian.png",
+    "palkia-origin": "https://img.pokemondb.net/sprites/home/shiny/palkia-origin.png"
+};
+        
+function generateOfferTab() {
+    let totalCount = 0;
+    
+    // Sprawdzenie, czy dane zostały poprawnie pobrane z Google Sheets
+    if (typeof myShinyCollection === 'undefined' || myShinyCollection.length === 0) {
+        console.warn("Brak danych w myShinyCollection. Czekam na załadowanie...");
+        return;
+    }
 
-            myShinyCollection.sort((a, b) => a.id - b.id);
+    // 1. Czyszczenie wszystkich kontenerów przed generowaniem (zapobiega duplikatom)
+    document.querySelectorAll('#my-offer-grid-container .pokemon-grid').forEach(grid => grid.innerHTML = '');
 
-            myShinyCollection.forEach(poko => {
-                totalCount += poko.count;
+    // 2. Sortowanie całej kolekcji według National Dex ID (rosnąco)
+    myShinyCollection.sort((a, b) => a.id - b.id);
 
-                const regionMatch = regionThresholds.find(r => poko.id >= r.min && poko.id <= r.max);
-                if (!regionMatch) return;
+    // 3. Iteracja przez każdego Pokémona w kolekcji
+    myShinyCollection.forEach(poko => {
+        // Sumowanie ogólnej liczby sztuk
+        totalCount += poko.count;
 
-                const grid = document.getElementById(`${regionMatch.name}-grid`);
-                if (!grid) return;
-
-                let imgKey = poko.name.toLowerCase();
-                if (poko.costume) imgKey = poko.name.split('-')[0];
-                
-                let imgUrl = `https://img.pokemondb.net/sprites/home/shiny/${imgKey}.png`;
-                const displayKey = poko.displayName ? poko.displayName : poko.name;
-
-                let prefix = '';
-                if (poko.isShiny) prefix += '✨ ';
-                if (poko.costume) prefix += '🤠 ';
-                if (poko.background) prefix += '🖼️ ';
-
-                const card = document.createElement('div');
-                card.className = 'pokemon-card';
-                card.setAttribute('data-type', poko.type);
-                card.innerHTML = `
-                    <div class="count-badge">${poko.count}</div>
-                    <img src="${imgUrl}" alt="${displayKey}" style="min-height: 80px;" onerror="this.onerror=null; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';">
-                    <div class="pokemon-name">${prefix}${displayKey}</div>
-                `;
-                grid.appendChild(card);
-            });
-
-            document.getElementById('total-sum').innerText = `Total Pokémon available: ${totalCount}`;
-
-            document.querySelectorAll('.region-block').forEach(block => {
-                const hasCards = block.querySelectorAll('.pokemon-card').length > 0;
-                block.style.display = hasCards ? '' : 'none';
-            });
+        // DYNAMICZNA SEGMENTACJA: Szukanie regionu na podstawie zakresu ID
+        const regionMatch = regionThresholds.find(r => poko.id >= r.min && poko.id <= r.max);
+        if (!regionMatch) {
+            console.error(`Nie znaleziono regionu dla Pokémona o ID: ${poko.id}`);
+            return;
         }
+
+        // Pobranie odpowiedniego kontenera grid dla danego regionu
+        const grid = document.getElementById(`${regionMatch.name}-grid`);
+        if (!grid) return;
+
+        let nameKey = poko.name.toLowerCase();
+        let imgUrl;
+
+        // BRAMKA LOGICZNA: Sprawdzenie wyjątków dla form regionalnych w regionalImageMap
+        if (typeof regionalImageMap !== 'undefined' && regionalImageMap[nameKey]) {
+            imgUrl = regionalImageMap[nameKey];
+        } else {
+            // Standardowa procedura budowania linku (Shiny)
+            let imgKey = nameKey;
+            // Jeśli to kostium, używamy nazwy bazowej dla grafiki modelu 3D
+            if (poko.costume) imgKey = nameKey.split('-')[0];
+            imgUrl = `https://img.pokemondb.net/sprites/home/shiny/${imgKey}.png`;
+        }
+
+        // Ustalenie wyświetlanej nazwy (priorytet dla displayName z Arkusza)
+        const displayKey = poko.displayName ? poko.displayName : poko.name;
+
+        // Logika ikon przed nazwą (prefixy)
+        let prefix = '';
+        if (poko.isShiny) prefix += '✨ ';
+        if (poko.costume) prefix += '🤠 ';
+        if (poko.background) prefix += '🖼️ ';
+
+        // Tworzenie elementu karty Pokémona
+        const card = document.createElement('div');
+        card.className = 'pokemon-card';
+        card.setAttribute('data-type', poko.type); // Atrybut potrzebny do filtrowania (Costume/Regional itp.)
+        
+        card.innerHTML = `
+            <div class="count-badge">${poko.count}</div>
+            <img src="${imgUrl}" alt="${displayKey}" 
+                 style="min-height: 80px;" 
+                 onerror="this.onerror=null; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';">
+            <div class="pokemon-name">${prefix}${displayKey}</div>
+        `;
+        
+        grid.appendChild(card);
+    });
+
+    // 4. Aktualizacja licznika "Total Pokémon" na stronie
+    const totalSumLabel = document.getElementById('total-sum');
+    if (totalSumLabel) {
+        totalSumLabel.innerText = `Total Pokémon available: ${totalCount}`;
+    }
+
+    // 5. Ukrywanie bloków regionów, które po wygenerowaniu pozostały puste
+    document.querySelectorAll('.region-block').forEach(block => {
+        const hasVisibleCards = block.querySelectorAll('.pokemon-card').length > 0;
+        block.style.display = hasVisibleCards ? '' : 'none';
+    });
+}
 
         function filterOffer(type, button) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
