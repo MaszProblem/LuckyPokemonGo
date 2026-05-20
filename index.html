@@ -294,6 +294,12 @@
     </div>
 
     <div id="tab-kalendarz" class="tab-content">
+    <div class="calendar-legend" style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; background: #1a1a1e; padding: 15px; border-radius: 8px; border: 1px solid #2c2c35; font-size: 12px;">
+    <div style="display: flex; align-items: center; gap: 8px;"><div class="calendar-day day-dark-green" style="padding: 5px; min-width: 20px; cursor: default;"></div> <span>Remote & Regular Free</span></div>
+    <div style="display: flex; align-items: center; gap: 8px;"><div class="calendar-day day-light-green" style="padding: 5px; min-width: 20px; cursor: default;"></div> <span>Regular Free (Remote Taken)</span></div>
+    <div style="display: flex; align-items: center; gap: 8px;"><div class="calendar-day day-yellow" style="padding: 5px; min-width: 20px; cursor: default;"></div> <span>Remote Free (Regular Taken)</span></div>
+    <div style="display: flex; align-items: center; gap: 8px;"><div class="calendar-day day-red" style="padding: 5px; min-width: 20px; cursor: default;"></div> <span>Full / Busy</span></div>
+</div>
     <div class="calendar-wrapper">
         <div class="calendar-nav" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <button class="filter-btn" onclick="changeMonth(-1)">◀ Prev</button>
@@ -324,18 +330,18 @@
                 <div class="form-group">
                     <label>What you want from me * (Max 3, 1st mandatory)</label>
                     <div class="form-row-3">
-                        <input type="text" id="form-want1" required placeholder="Pokemon 1">
-                        <input type="text" id="form-want2" placeholder="Pokemon 2">
-                        <input type="text" id="form-want3" placeholder="Pokemon 3">
+                        <input type="text" id="form-want1" list="offer-names-list" required placeholder="Pokemon 1">
+                        <input type="text" id="form-want2" list="offer-names-list" placeholder="Pokemon 2">
+                        <input type="text" id="form-want3" list="offer-names-list" placeholder="Pokemon 3">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>What you offer * (Max 3, 1st mandatory)</label>
                     <div class="form-row-3">
-                        <input type="text" id="form-offer1" required placeholder="Pokemon 1">
-                        <input type="text" id="form-offer2" placeholder="Pokemon 2">
-                        <input type="text" id="form-offer3" placeholder="Pokemon 3">
+                        <input type="text" id="form-offer1" list="wishlist-names-list" required placeholder="Pokemon 1">
+                        <input type="text" id="form-offer2" list="wishlist-names-list" placeholder="Pokemon 2">
+                        <input type="text" id="form-offer3" list="wishlist-names-list" placeholder="Pokemon 3">
                     </div>
                 </div>
 
@@ -620,46 +626,92 @@ function buildCalendar() {
             document.getElementById('trade-booking-form').reset();
         }
 
-        async function handleFormSubmit(event) {
+    async function handleFormSubmit(event) {
     event.preventDefault();
     const submitBtn = event.target.querySelector('.submit-btn');
     const originalText = submitBtn.innerText;
     
+    // Blokada przycisku i zmiana tekstu (Feedback wizualny)
     submitBtn.innerText = "Saving...";
     submitBtn.disabled = true;
 
-    const formData = new FormData();
-    formData.append('date', document.getElementById('form-date-field').value);
-    formData.append('nickname', document.getElementById('form-nickname').value);
-    formData.append('tradeType', document.getElementById('form-tradetype').value);
-    formData.append('want1', document.getElementById('form-want1').value);
-    formData.append('want2', document.getElementById('form-want2').value || "");
-    formData.append('want3', document.getElementById('form-want3').value || "");
-    formData.append('offer1', document.getElementById('form-offer1').value);
-    formData.append('offer2', document.getElementById('form-offer2').value || "");
-    formData.append('offer3', document.getElementById('form-offer3').value || "");
-    formData.append('contact', document.getElementById('form-contact').value || "");
+    // Pobieranie danych z pól formularza
+    const dateVal = document.getElementById('form-date-field').value;
+    const nicknameVal = document.getElementById('form-nickname').value;
+    const tradeTypeVal = document.getElementById('form-tradetype').value;
+    const want1Val = document.getElementById('form-want1').value;
+    const want2Val = document.getElementById('form-want2').value || "";
+    const want3Val = document.getElementById('form-want3').value || "";
+    const offer1Val = document.getElementById('form-offer1').value;
+    const offer2Val = document.getElementById('form-offer2').value || "";
+    const offer3Val = document.getElementById('form-offer3').value || "";
+    const contactVal = document.getElementById('form-contact').value || "";
+
+    // Budowanie parametrów zapytania (QueryString)
+    const params = new URLSearchParams({
+        date: dateVal,
+        nickname: nicknameVal,
+        tradeType: tradeTypeVal,
+        want1: want1Val,
+        want2: want2Val,
+        want3: want3Val,
+        offer1: offer1Val,
+        offer2: offer2Val,
+        offer3: offer3Val,
+        contact: contactVal
+    });
+
+    const fullUrl = APPS_SCRIPT_URL + "?" + params.toString();
 
     try {
-        // Wysyłamy jako tradycyjny formularz (QueryString), co Google Script lubi najbardziej
-        const queryString = new URLSearchParams(formData).toString();
-        await fetch(APPS_SCRIPT_URL + "?" + queryString, {
-            method: 'POST'
+        // WYŚLIJ I ZAPOMNIJ: Używamy no-cors, aby nie czekać na powolne przekierowanie Google
+        // Dzięki temu użytkownik odczuje natychmiastowe działanie
+        fetch(fullUrl, { 
+            method: 'POST',
+            mode: 'no-cors' 
         });
+
+        // OPTYMISTYCZNA AKTUALIZACJA: Dodajemy wpis do lokalnej pamięci, 
+        // aby kalendarz zmienił kolor od razu bez ponownego pobierania arkusza
+        if (!window.existingBookings) window.existingBookings = [];
+        window.existingBookings.push({ 
+            date: dateVal, 
+            tradeType: tradeTypeVal 
+        });
+
+        // Feedback dla użytkownika
+        alert("Booking submitted! Your entry will appear in the calendar shortly.");
         
-        // Ponieważ Google Script przy POST zawsze wyrzuca CORS error (mimo że zapisuje), 
-        // zakładamy sukces jeśli nie wpadliśmy w catch w dziwny sposób lub po prostu dajemy timeout
-        alert("Request sent! Please check the calendar in a moment.");
+        // Czyszczenie i zamykanie
         closeModal();
-        initApplication(); // Odśwież dane
+        
+        // Odświeżamy widok kalendarza, żeby pokazał nową zajętość (kolor)
+        buildCalendar();
+
     } catch (error) {
         console.error("Save error:", error);
-        alert("There was a connection issue, but your trade might have been saved. Refresh the page.");
+        alert("There was a connection issue. If your trade doesn't appear after refresh, try again.");
     } finally {
+        // Przywrócenie przycisku do stanu pierwotnego
         submitBtn.innerText = originalText;
         submitBtn.disabled = false;
     }
 }
+function updateDatalists() {
+    const offerList = document.getElementById('offer-names-list');
+    const wishList = document.getElementById('wishlist-names-list');
+    
+    // Pobierz unikalne nazwy z Twojej oferty
+    const myOfferNames = [...new Set(window.myShinyCollection.map(p => p.displayName || p.name))];
+    offerList.innerHTML = myOfferNames.map(name => `<option value="${name}">`).join('');
+    
+    // Pobierz unikalne nazwy z Twojej wishlisty
+    const myWishNames = [...new Set(window.listaSzukam.map(p => p.name))];
+    wishList.innerHTML = myWishNames.map(name => `<option value="${name}">`).join('');
+}
+initApplication()
     </script>
+<datalist id="offer-names-list"></datalist>
+<datalist id="wishlist-names-list"></datalist>
 </body>
 </html>
