@@ -1,51 +1,79 @@
 [PL]
-# 🍀 Lista Wymian Lucky Trade - GlupekzRivii
+LuckyPokemonGo - Trade & Calendar System
+System do zarządzania wymianami w Pokémon GO, oparty na Google Sheets jako bazie danych, GitHub Pages jako hostingu oraz Discord Webhook dla powiadomień.
 
-Strona internetowa służąca do prezentacji listy poszukiwanych Pokémonów w grze Pokémon GO. Narzędzie automatycznie generuje profesjonalne filtry (search strings), które możesz wkleić bezpośrednio w wyszukiwarkę w grze.
+Funkcje
+Dynamiczna Oferta i Wishlista: Synchronizacja z Google Sheets.
 
----
+Kalendarz Rezerwacji: System wyboru terminów z podziałem na Remote/Regular Trade.
 
-## 🛠️ Jak edytować listę?
+Autouzupełnianie: Podpowiedzi nazw Pokémonów z rozróżnieniem form Shiny (*).
 
-Aktualizacja strony jest bardzo prosta i nie wymaga wiedzy programistycznej. Cała konfiguracja znajduje się w pliku `index.html`.
+Powiadomienia: Wysyłka szczegółów rezerwacji na kanał Discord z oznaczeniem użytkownika.
 
-### Instrukcja krok po kroku:
+Instrukcja Wdrożenia
+1. Przygotowanie Arkusza Google
+Skopiuj szablon arkusza (Plik -> Utwórz kopię).
 
-1.  **Otwórz plik:** Zaloguj się na GitHub, wejdź do swojego repozytorium i kliknij w plik `index.html`.
-2.  **Tryb edycji:** Kliknij ikonę ołówka (**Edit this file**) w prawym górnym rogu.
-3.  **Znajdź sekcję list:** Zjedź do okolic **155. linii kodu**. Zobaczysz tam sekcję zaczynającą się od:
-    `// LISTY POKEMONÓW`.
-4.  **Wprowadź zmiany:** 
-    - Nazwy Pokémonów wpisuj w nawiasach `[ ]`.
-    - Każdą nazwę umieść w cudzysłowie, np. `"pikachu"`.
-    - Rozdzielaj nazwy przecinkami.
-    - Używaj **angielskich nazw** Pokémonów.
-5.  **Zapisz zmiany:** Po zakończeniu edycji zjedź na sam dół strony i kliknij zielony przycisk **Commit changes**. Twoja strona zaktualizuje się automatycznie w ciągu około minuty.
+Arkusz musi zawierać zakładki: wishlist, offer, calendar.
 
----
+Uzupełnij dane w zakładkach zgodnie z formatem nagłówków.
 
-## 📝 Zasady wpisywania nazw
+Opublikuj arkusz: Plik -> Udostępnij -> Opublikuj w internecie -> Cały dokument (CSV).
 
-Nasz system jest inteligentny i automatycznie dopasowuje obrazki oraz filtry:
+Zanotuj SPREADSHEET_ID (z adresu URL arkusza) oraz numery GID dla każdej zakładki.
 
-*   **Zwykłe Pokémony:** Wpisz po prostu nazwę, np. `"mewtwo"`.
-*   **Formy specjalne (Obrazek vs Gra):**
-    - Jeśli chcesz, aby wyświetlał się obrazek konkretnej formy (np. Palkia na czterech nogach), wpisz `"palkia-origin"`. 
-    - System wyświetli epicki obrazek, ale w polu "Kopiuj" wygeneruje czystą nazwę `"palkia"`, aby gra mogła ją poprawnie wyszukać.
-    - Podobnie dla Landorusa: użyj `"landorus-therian"`.
-*   **Unowny:** W sekcji Unownów wpisuj tylko literki, np. `"b"`, `"x"`, `"z"`.
-*   **Shiny:** W sekcjach oznaczonych jako "Shiny", system automatycznie pobierze błyszczące grafiki – nie musisz dopisywać słowa "shiny" przed nazwą.
+2. Konfiguracja Google Apps Script
+W arkuszu wybierz Rozszerzenia -> Apps Script.
 
----
+Wklej kod skryptu obsługującego doPost oraz powiadomienia Discord.
 
-## ✨ Funkcje strony
+W kodzie uzupełnij DISCORD_WEBHOOK_URL oraz DISCORD_USER_ID.
 
-*   **Automatyczne Grafiki:** Nie musisz szukać linków do zdjęć. Skrypt sam pobiera je z oficjalnych baz na podstawie wpisanej nazwy.
-*   **Inteligentne Filtry:** Każda sekcja generuje unikalny kod do gry (np. dodaje `@special` dla ataków legacy lub `!traded` dla nowych wymian).
-*   **Szybkie Kopiowanie:** Przycisk "Kopiuj" natychmiast zapisuje filtr w schowku Twojego telefonu lub komputera.
-*   **Responsywność:** Strona wygląda dobrze zarówno na komputerze, jak i na ekranie smartfona podczas gry.
+Wdróż skrypt: Wdróż -> Nowe wdrożenie -> Aplikacja sieciowa.
 
----
+Ustaw dostęp: Execute as: Me, Who has access: Anyone.
+
+Skopiuj wygenerowany Web App URL.
+
+3. Konfiguracja plików strony
+W pliku index.html odszukaj sekcję CONFIGURATION.
+
+Wprowadź pobrane wcześniej dane:
+
+SPREADSHEET_ID
+
+WISHLIST_GID, OFFER_GID, CALENDAR_GID
+
+APPS_SCRIPT_URL
+
+Zaktualizuj regionalImageMap, jeśli posiadasz niestandardowe formy regionalne.
+
+4. Hosting na GitHub Pages
+Prześlij pliki (index.html, folder img) do repozytorium GitHub.
+
+Wejdź w Settings -> Pages.
+
+W sekcji Build and deployment wybierz gałąź main i folder /(root).
+
+Strona będzie dostępna pod adresem https://nazwa_użytkownika.github.io/nazwa_repozytorium/.
+
+Struktura Danych (CSV)
+Zakładka Offer:
+id, name, displayName, count, type, isShiny, costume, background, localBackground, gigantamax
+
+Zakładka Calendar:
+date, nickname, want1, want2, want3, offer1, offer2, offer3, contact, tradeType
+
+Technologie
+Frontend: HTML5, CSS3, JavaScript (Vanilla).
+
+Backend: Google Apps Script.
+
+Baza danych: Google Sheets.
+
+Powiadomienia: Discord Webhook API.
+
 
 **Autor:** GlupekzRivii  
 **Technologia:** HTML / CSS / JavaScript (GitHub Pages)
@@ -56,52 +84,82 @@ Nasz system jest inteligentny i automatycznie dopasowuje obrazki oraz filtry:
 --------------------------------------------------------------------------------
 
 [EN]
-# 🍀 Lucky Trade Wishlist - GlupekzRivii
+Oto techniczna struktura pliku README.md w wersji angielskiej. Została przygotowana w sposób konkretny i zwięzły, zgodnie z Twoją prośbą.
 
-A web-based tool designed to showcase your wanted Pokémon in Pokémon GO. It automatically generates professional search strings that you can copy and paste directly into the game's search bar.
+LuckyPokemonGo - Trade & Calendar System
+A Pokémon GO trade management system using Google Sheets as a database, GitHub Pages for hosting, and Discord Webhooks for automated notifications.
 
----
+Features
+Dynamic Offer & Wishlist: Real-time synchronization with Google Sheets.
 
-## 🛠️ How to Edit Your List
+Booking Calendar: Date selection system with Remote and Regular Trade availability tracking.
 
-Updating your page is very simple and doesn't require any programming knowledge. Everything is configured within the `index.html` file.
+Autocomplete: Pokémon name suggestions with Shiny (*) form differentiation.
 
-### Step-by-Step Instructions:
+Notifications: Automated reservation details sent to Discord with direct user mentions.
 
-1.  **Open the file:** Log in to GitHub, go to your repository, and click on the `index.html` file.
-2.  **Edit mode:** Click the pencil icon (**Edit this file**) in the top right corner.
-3.  **Find the list section:** Scroll down to approximately **line 155**. Look for the section starting with:
-    `// LISTY POKEMONÓW` (or `// POKEMON LISTS`).
-4.  **Make changes:** 
-    - Enter Pokémon names inside the brackets `[ ]`.
-    - Place each name in quotes, e.g., `"pikachu"`.
-    - Separate names with commas.
-    - Always use **English Pokémon names**.
-5.  **Save changes:** Once finished, scroll to the bottom and click the green **Commit changes** button. Your website will update automatically within about a minute.
+Deployment Guide
+1. Google Sheets Setup
+Copy the provided spreadsheet template (File -> Make a copy).
 
----
+Ensure the spreadsheet contains three tabs: wishlist, offer, and calendar.
 
-## 📝 Naming Conventions
+Fill in your data following the exact header formats.
 
-The system is smart and automatically handles images and search filters:
+Publish the sheet: File -> Share -> Publish to web -> Entire document (CSV).
 
-*   **Standard Pokémon:** Just enter the name, e.g., `"mewtwo"`.
-*   **Special Forms (Image vs. Game Search):**
-    - To display a specific form (e.g., Origin Forme Palkia), enter `"palkia-origin"`.
-    - The system will show the correct artwork but will generate a clean name (`"palkia"`) in the copy-paste string so the game can find it correctly.
-    - Same applies to Landorus: use `"landorus-therian"` for the four-legged form.
-*   **Unowns:** In the Unown section, just enter the letters, e.g., `"b"`, `"x"`, `"z"`.
-*   **Shiny:** In sections labeled as "Shiny", the system automatically fetches shiny sprites – you don't need to add the word "shiny" before the name.
+Note your SPREADSHEET_ID (from the URL) and the GID numbers for each tab.
 
----
+2. Google Apps Script Configuration
+In your spreadsheet, go to Extensions -> Apps Script.
 
-## ✨ Features
+Paste the provided backend script (handling doPost and Discord notifications).
 
-*   **Automatic Sprites:** No need to search for image links. The script fetches them automatically based on the name provided.
-*   **Smart Search Strings:** Each section generates a unique in-game code (e.g., adding `@special` for legacy moves or `!traded` for new trades).
-*   **One-Tap Copy:** The "Copy" button instantly saves the filter to your phone or computer's clipboard.
-*   **Fully Responsive:** The page is optimized for both desktop and mobile screens for easy use while playing.
+Enter your DISCORD_WEBHOOK_URL and DISCORD_USER_ID in the configuration section.
 
+Deploy the script: Deploy -> New deployment -> Web app.
+
+Set permissions: Execute as: Me, Who has access: Anyone.
+
+Copy the generated Web App URL.
+
+3. Website Configuration
+Locate the CONFIGURATION section in your index.html file.
+
+Input the following data:
+
+SPREADSHEET_ID
+
+WISHLIST_GID, OFFER_GID, CALENDAR_GID
+
+APPS_SCRIPT_URL
+
+Update the regionalImageMap for any custom regional forms.
+
+4. GitHub Pages Hosting
+Upload your files (index.html, img folder) to a GitHub repository.
+
+Navigate to Settings -> Pages.
+
+Under Build and deployment, select the main branch and /(root) folder.
+
+The site will be live at https://your_username.github.io/your_repo_name/.
+
+Data Structure (CSV)
+Offer Tab:
+id, name, displayName, count, type, isShiny, costume, background, localBackground, gigantamax
+
+Calendar Tab:
+date, nickname, want1, want2, want3, offer1, offer2, offer3, contact, tradeType
+
+Tech Stack
+Frontend: HTML5, CSS3, JavaScript (Vanilla).
+
+Backend: Google Apps Script.
+
+Database: Google Sheets.
+
+Notifications: Discord Webhook API.
 ---
 
 **Author:** GlupekzRivii  
