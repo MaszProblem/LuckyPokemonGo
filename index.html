@@ -476,46 +476,82 @@
         }
 
 function generateOfferTab() {
-    const grid = document.getElementById('offer-grid'); // Upewnij się, że masz taki ID w HTML
-    if (!grid) return;
+    let totalCount = 0;
     
-    grid.innerHTML = ''; // Czyszczenie przed generowaniem
+    // Sprawdzenie dostępności danych
+    if (typeof myShinyCollection === 'undefined' || myShinyCollection.length === 0) {
+        console.warn("Brak danych w myShinyCollection.");
+        return;
+    }
 
-    window.myShinyCollection.forEach(p => {
+    // 1. Czyszczenie kontenerów przed ponownym generowaniem
+    document.querySelectorAll('#my-offer-grid-container .pokemon-grid').forEach(grid => grid.innerHTML = '');
+
+    // 2. Sortowanie kolekcji według ID
+    myShinyCollection.sort((a, b) => a.id - b.id);
+
+    // 3. Generowanie kart
+    myShinyCollection.forEach(poko => {
+        totalCount += poko.count;
+
+        // Szukanie regionu na podstawie ID
+        const regionMatch = regionThresholds.find(r => poko.id >= r.min && poko.id <= r.max);
+        if (!regionMatch) return;
+
+        const grid = document.getElementById(`${regionMatch.name}-grid`);
+        if (!grid) return;
+
+        // --- POPRAWIONA LOGIKA OBRAZKÓW ---
+        let imgUrl;
+        let nameKey = poko.name.toLowerCase();
+
+        // Jeśli to forma regionalna z naszej mapy (Alola/Galar/Hisui)
+        if (typeof regionalImageMap !== 'undefined' && regionalImageMap[nameKey]) {
+            imgUrl = regionalImageMap[nameKey];
+        } else {
+            // Logika dla zwykłych i Shiny (dodajemy -shiny tylko gdy flaga jest TRUE)
+            let imgKey = nameKey;
+            if (poko.costume) imgKey = nameKey.split('-')[0];
+            
+            const isShiny = (poko.isShiny === true || poko.shiny === true);
+            const suffix = isShiny ? "-shiny" : "";
+            
+            imgUrl = `https://img.pokemondb.net/sprites/home/${isShiny ? 'shiny' : 'normal'}/${imgKey}${suffix}.png`;
+        }
+        // ---------------------------------
+
+        const displayKey = poko.displayName ? poko.displayName : poko.name;
+
+        // Prefiksy ikon
+        let prefix = '';
+        if (poko.isShiny || poko.shiny) prefix += '✨ ';
+        if (poko.costume) prefix += '🤠 ';
+        if (poko.background) prefix += '🖼️ ';
+
         const card = document.createElement('div');
         card.className = 'pokemon-card';
-
-        // 1. LOGIKA WYBORU OBRAZKA
-        // Sprawdzamy czy pokemon jest shiny w danych (oferuje.js)
-        const isShiny = p.shiny === true || p.isShiny === true;
-        const suffix = isShiny ? "-shiny" : "";
-        
-        // Budujemy ścieżkę: img/ID.png lub img/ID-shiny.png
-        const imgSrc = `img/${p.id}${suffix}.png`;
-
-        // 2. GENEROWANIE HTML KARTY
+        card.setAttribute('data-type', poko.type);
         card.innerHTML = `
-            <div class="pokemon-image-container">
-                <img src="${imgSrc}" 
-                     alt="${p.name}" 
-                     loading="lazy"
-                     onerror="this.onerror=null; this.src='img/0.png';">
-                ${isShiny ? '<div class="shiny-icon">✨</div>' : ''}
-            </div>
-            <div class="pokemon-info">
-                <div class="pokemon-name">${p.displayName || p.name}</div>
-                <div class="pokemon-details">
-                    <span class="region-tag">${p.region || ''}</span>
-                    ${p.count > 1 ? `<span class="count-tag">x${p.count}</span>` : ''}
-                </div>
-            </div>
+            <div class="count-badge">${poko.count}</div>
+            <img src="${imgUrl}" alt="${displayKey}" 
+                 style="min-height: 80px;" 
+                 onerror="this.onerror=null; this.src='https://img.pokemondb.net/sprites/sword-shield/icon/${poko.name.split('-')[0].toLowerCase()}.png';">
+            <div class="pokemon-name">${prefix}${displayKey}</div>
         `;
-
-        // Opcjonalne: Dodaj klasę CSS jeśli to costume lub gmax dla dodatkowych stylów
-        if (p.type === 'costume') card.classList.add('type-costume');
-        if (p.gmax) card.classList.add('type-gmax');
-
+        
         grid.appendChild(card);
+    });
+
+    // Aktualizacja licznika
+    const totalSumLabel = document.getElementById('total-sum');
+    if (totalSumLabel) {
+        totalSumLabel.innerText = `Total Pokémon available: ${totalCount}`;
+    }
+
+    // Ukrywanie pustych bloków regionów
+    document.querySelectorAll('.region-block').forEach(block => {
+        const hasVisibleCards = block.querySelectorAll('.pokemon-card').length > 0;
+        block.style.display = hasVisibleCards ? '' : 'none';
     });
 }
 
