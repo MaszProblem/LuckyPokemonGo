@@ -294,11 +294,15 @@
     </div>
 
     <div id="tab-kalendarz" class="tab-content">
-        <div class="calendar-wrapper">
-            <div id="calendar-month-title" class="calendar-header">Month Year</div>
-            <div class="calendar-grid" id="calendar-grid-target"></div>
+    <div class="calendar-wrapper">
+        <div class="calendar-nav" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <button class="filter-btn" onclick="changeMonth(-1)">◀ Prev</button>
+            <div id="calendar-month-title" class="calendar-header" style="margin-bottom: 0;">Month Year</div>
+            <button class="filter-btn" onclick="changeMonth(1)">Next ▶</button>
         </div>
+        <div class="calendar-grid" id="calendar-grid-target"></div>
     </div>
+</div>
 
     <div id="booking-modal" class="modal-overlay">
         <div class="modal-content">
@@ -518,65 +522,71 @@
         }
 
         /* ENGINE KALENDARZA */
-        function buildCalendar() {
-            const grid = document.getElementById('calendar-grid-target');
-            const monthTitle = document.getElementById('calendar-month-title');
-            grid.innerHTML = '';
+let currentViewDate = new Date(); // Przechowuje aktualnie wyświetlany miesiąc
 
-            const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            weekdays.forEach(day => {
-                const label = document.createElement('div');
-                label.className = 'weekday-label';
-                label.innerText = day;
-                grid.appendChild(label);
-            });
+function changeMonth(offset) {
+    // Zmiana miesiąca o offset
+    currentViewDate.setMonth(currentViewDate.getMonth() + offset);
+    buildCalendar();
+}
 
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth(); // Bieżący miesiąc (0-11)
+function buildCalendar() {
+    const grid = document.getElementById('calendar-grid-target');
+    const monthTitle = document.getElementById('calendar-month-title');
+    grid.innerHTML = '';
 
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            monthTitle.innerText = `${monthNames[month]} ${year}`;
+    const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    weekdays.forEach(day => {
+        const label = document.createElement('div');
+        label.className = 'weekday-label';
+        label.innerText = day;
+        grid.appendChild(label);
+    });
 
-            const firstDayIndex = new Date(year, month, 1).getDay();
-            const remappedFirstDay = firstDayIndex === 0 ? 6 : firstDayIndex - 1; // Konwersja na format Mon-Sun
-            const totalDays = new Date(year, month + 1, 0).getDate();
+    const year = currentViewDate.getFullYear();
+    const month = currentViewDate.getMonth();
 
-            // Puste kafelek wyrównujące początek miesiąca
-            for (let i = 0; i < remappedFirstDay; i++) {
-                grid.appendChild(document.createElement('div'));
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    monthTitle.innerText = `${monthNames[month]} ${year}`;
+
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const remappedFirstDay = firstDayIndex === 0 ? 6 : firstDayIndex - 1; 
+    const totalDays = new Date(year, month + 1, 0).getDate();
+
+    // Puste kafelki wyrównujące
+    for (let i = 0; i < remappedFirstDay; i++) {
+        grid.appendChild(document.createElement('div'));
+    }
+
+    // Dzisiejsza data do porównań (bez godziny)
+    const now = new Date();
+    const todaySimple = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    for (let day = 1; day <= totalDays; day++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'calendar-day';
+        dayDiv.innerText = day;
+
+        const checkDate = new Date(year, month, day);
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+        if (checkDate < todaySimple) {
+            dayDiv.classList.add('day-past');
+        } else {
+            if (checkDate.getTime() === todaySimple.getTime()) {
+                dayDiv.classList.add('day-current');
             }
+            
+            const status = getDayStatus(dateStr);
+            dayDiv.classList.add(status.className);
 
-            // Generowanie dni miesiąca
-            for (let day = 1; day <= totalDays; day++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.className = 'calendar-day';
-                dayDiv.innerText = day;
-
-                const checkDate = new Date(year, month, day);
-                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
-                // Sprawdzanie czy dzień minął
-                const comparisonToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-                
-                if (checkDate < comparisonToday) {
-                    dayDiv.classList.add('day-past');
-                } else {
-                    if (checkDate.getTime() === comparisonToday.getTime()) {
-                        dayDiv.classList.add('day-current');
-                    }
-                    
-                    // Klasyfikacja koloru na podstawie rezerwacji z bazy
-                    const status = getDayStatus(dateStr);
-                    dayDiv.classList.add(status.className);
-
-                    if (status.className !== 'day-red') {
-                        dayDiv.onclick = () => openBookingModal(dateStr, status.remoteFree, status.regularFree);
-                    }
-                }
-                grid.appendChild(dayDiv);
+            if (status.className !== 'day-red') {
+                dayDiv.onclick = () => openBookingModal(dateStr, status.remoteFree, status.regularFree);
             }
         }
+        grid.appendChild(dayDiv);
+    }
+}
 
         // Pobieranie statusu zajętości terminów na dany dzień
         function getDayStatus(dateStr) {
