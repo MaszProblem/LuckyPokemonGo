@@ -443,6 +443,7 @@
                 
                 generateOfferTab();
                 buildCalendar();
+                updateDatalists();
             } catch (error) {
                 console.error("Critical error initialization:", error);
                 document.getElementById('total-sum').innerText = "Error loading data!";
@@ -709,7 +710,6 @@ function updateDatalists() {
     const myWishNames = [...new Set(window.listaSzukam.map(p => p.name))];
     wishList.innerHTML = myWishNames.map(name => `<option value="${name}">`).join('');
 }
-initApplication()
     </script>
 <datalist id="offer-names-list"></datalist>
 <datalist id="wishlist-names-list"></datalist>
