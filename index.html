@@ -92,7 +92,6 @@
             transform: rotate(-90deg);
         }
 
-        /* COLLAPSIBLE CONTENT CONTAINER */
         .collapsible-content {
             width: 100%;
             max-height: 0;
@@ -112,144 +111,75 @@
             transform: rotate(0deg);
         }
 
-        /* Header Colors */
+        /* Color classes */
         .color-pve-shiny { color: #f39c12; border-color: #d35400; }
         .color-pve-legacy { color: #e74c3c; border-color: #c0392b; }
         .color-pve-both { color: #9b59b6; border-color: #8e44ad; }
         .color-pve-normal { color: #3498db; border-color: #2980b9; }
         .color-others { color: #95a5a6; border-color: #7f8c8d; }
         .color-unown { color: #1abc9c; border-color: #16a085; }
-        
-        /* Region Colors for Offer */
         .color-region { color: #2ecc71; border-color: #27ae60; }
-        .color-region .section-title { font-size: 18px; }
 
-        /* FILTER BUTTONS */
-        .filter-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
-            width: 100%;
-        }
+        /* FILTER & BADGES */
+        .filter-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; width: 100%; }
+        .filter-btn { background-color: #1a1a1e; border: 1px solid #2c2c35; color: #aaa; padding: 8px 16px; font-size: 13px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+        .filter-btn:hover, .filter-btn.active { border-color: #2ecc71; color: #fff; background-color: rgba(46, 204, 113, 0.1); }
+        .summary-badge { background-color: #1a1a1e; border: 1px solid #2c2c35; padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; color: #2ecc71; display: inline-block; }
 
-        .filter-btn {
-            background-color: #1a1a1e;
-            border: 1px solid #2c2c35;
-            color: #aaa;
-            padding: 8px 16px;
-            font-size: 13px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            border-color: #2ecc71;
-            color: #fff;
-            background-color: rgba(46, 204, 113, 0.1);
-        }
-
-        /* CONTROL TOTALS SUMMARY */
-        .summary-badge {
-            background-color: #1a1a1e;
-            border: 1px solid #2c2c35;
-            padding: 10px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: bold;
-            color: #2ecc71;
-            display: inline-block;
-        }
-
-        /* STRING COPIER FOR WISHLIST */
-        .string-container {
-            width: 100%;
-            display: flex;
-            background-color: #1a1a1e;
-            border: 1px solid #2c2c35;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-
-        .string-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 10px 15px;
-            color: #888;
-            font-family: monospace;
-            font-size: 12px;
-            outline: none;
-        }
-
-        .copy-btn {
-            background-color: #2c2c35;
-            border: none;
-            color: white;
-            padding: 0 15px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 11px;
-            transition: background-color 0.2s;
-            white-space: nowrap;
-        }
-
-        .copy-btn:hover { background-color: #444; }
+        /* STRINGS */
+        .string-container { width: 100%; display: flex; background-color: #1a1a1e; border: 1px solid #2c2c35; border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+        .string-input { flex: 1; background: transparent; border: none; padding: 10px 15px; color: #888; font-family: monospace; font-size: 12px; outline: none; }
+        .copy-btn { background-color: #2c2c35; border: none; color: white; padding: 0 15px; cursor: pointer; font-weight: bold; font-size: 11px; white-space: nowrap; }
 
         /* GRIDS */
-        .pokemon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .pokemon-card {
-            background-color: #1a1a1e;
-            border: 1px solid #2c2c35;
-            border-radius: 12px;
-            padding: 15px 10px;
-            text-align: center;
-            transition: transform 0.2s;
-            position: relative;
-        }
-
+        .pokemon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; width: 100%; }
+        .pokemon-card { background-color: #1a1a1e; border: 1px solid #2c2c35; border-radius: 12px; padding: 15px 10px; text-align: center; transition: transform 0.2s; position: relative; }
         .pokemon-card:hover { transform: translateY(-3px); border-color: #f1c40f; }
         #my-offer-grid-container .pokemon-card:hover { border-color: #2ecc71; }
+        .pokemon-card img { width: 80px; height: 80px; object-fit: contain; }
+        .pokemon-name { font-size: 13px; font-weight: 600; margin-top: 8px; text-transform: capitalize; }
+        .count-badge { position: absolute; top: -5px; right: -5px; background-color: #e67e22; color: white; font-size: 11px; font-weight: bold; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border: 2px solid #121214; }
 
-        .pokemon-card img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
+        /* CALENDAR ARCHITECTURE */
+        .calendar-wrapper { width: 100%; background-color: #1a1a1e; border: 1px solid #2c2c35; border-radius: 12px; padding: 20px; box-sizing: border-box; }
+        .calendar-header { font-size: 20px; font-weight: bold; text-align: center; color: #f1c40f; margin-bottom: 20px; text-transform: uppercase; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+        .weekday-label { font-size: 12px; font-weight: bold; color: #888; padding-bottom: 8px; text-transform: uppercase; }
+        
+        .calendar-day { 
+            background-color: #121214; 
+            border: 1px solid #2c2c35; 
+            border-radius: 8px; 
+            padding: 15px 5px; 
+            font-size: 14px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: transform 0.1s; 
         }
+        .calendar-day:not(.day-past):not(.day-red):hover { transform: scale(1.05); }
 
-        .pokemon-name {
-            font-size: 13px;
-            font-weight: 600;
-            margin-top: 8px;
-            text-transform: capitalize;
-        }
+        /* Statusy kolorów dni przyszłych */
+        .day-past { background-color: #18181c; color: #444; border-color: #1f1f24; cursor: not-allowed; }
+        .day-current { border: 2px dashed #f1c40f !important; }
+        .day-dark-green { background-color: #1e5c35; color: #fff; border-color: #27ae60; }
+        .day-light-green { background-color: #2ecc71; color: #121214; border-color: #27ae60; }
+        .day-yellow { background-color: #f1c40f; color: #121214; border-color: #d4ac0d; }
+        .day-red { background-color: #922b21; color: #fff; border-color: #c0392b; cursor: not-allowed; }
 
-        .count-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #e67e22;
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            border: 2px solid #121214;
-        }
+        /* FORM MODAL DISPLAY */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 10px; box-sizing: border-box; }
+        .modal-content { background-color: #1a1a1e; border: 2px solid #2c2c35; border-radius: 12px; width: 100%; max-width: 500px; padding: 25px; box-sizing: border-box; position: relative; }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #aaa; font-size: 20px; cursor: pointer; }
+        .modal-title { font-size: 18px; color: #f1c40f; margin-bottom: 15px; border-bottom: 1px solid #2c2c35; padding-bottom: 8px; }
+        
+        /* Form controls */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; color: #aaa; margin-bottom: 5px; text-transform: uppercase; font-weight: bold; }
+        .form-group input, .form-group select { width: 100%; background-color: #121214; border: 1px solid #2c2c35; border-radius: 6px; padding: 10px; color: white; box-sizing: border-box; outline: none; }
+        .form-group input:focus { border-color: #f1c40f; }
+        .form-row-3 { display: flex; gap: 8px; }
+        .submit-btn { width: 100%; background-color: #2ecc71; border: none; padding: 12px; color: #121214; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 14px; text-transform: uppercase; margin-top: 10px; }
+        .submit-btn:hover { background-color: #27ae60; color: white; }
     </style>
 </head>
 <body>
@@ -259,13 +189,12 @@
     <div class="tabs-container">
         <button class="tab-btn active" onclick="switchTab('tab-szukam', this)">🔍 Wishlist</button>
         <button class="tab-btn" onclick="switchTab('tab-oferuje', this)">🎁 Offer</button>
+        <button class="tab-btn" onclick="switchTab('tab-kalendarz', this)">📅 Calendar</button>
     </div>
 
     <div id="tab-szukam" class="tab-content active">
-        
         <div class="section-header color-pve-shiny" onclick="toggleSection(this)">
-            <h2 class="section-title">✨ PvE Shiny</h2>
-            <span class="collapse-arrow">▼</span>
+            <h2 class="section-title">✨ PvE Shiny</h2><span class="collapse-arrow">▼</span>
         </div>
         <div class="collapsible-content">
             <div class="string-container"><input type="text" id="pve-shiny-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('pve-shiny-str', this)">Copy String</button></div>
@@ -273,8 +202,7 @@
         </div>
 
         <div class="section-header color-pve-legacy" onclick="toggleSection(this)">
-            <h2 class="section-title">🎒 PvE Legacy Attack</h2>
-            <span class="collapse-arrow">▼</span>
+            <h2 class="section-title">🎒 PvE Legacy Attack</h2><span class="collapse-arrow">▼</span>
         </div>
         <div class="collapsible-content">
             <div class="string-container"><input type="text" id="pve-legacy-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('pve-legacy-str', this)">Copy String</button></div>
@@ -282,8 +210,7 @@
         </div>
 
         <div class="section-header color-pve-both" onclick="toggleSection(this)">
-            <h2 class="section-title">🌟 PvE Shiny Legacy</h2>
-            <span class="collapse-arrow">▼</span>
+            <h2 class="section-title">🌟 PvE Shiny Legacy</h2><span class="collapse-arrow">▼</span>
         </div>
         <div class="collapsible-content">
             <div class="string-container"><input type="text" id="pve-both-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('pve-both-str', this)">Copy String</button></div>
@@ -291,8 +218,7 @@
         </div>
 
         <div class="section-header color-pve-normal" onclick="toggleSection(this)">
-            <h2 class="section-title">⚔️ PvE Normal</h2>
-            <span class="collapse-arrow">▼</span>
+            <h2 class="section-title">⚔️ PvE Normal</h2><span class="collapse-arrow">▼</span>
         </div>
         <div class="collapsible-content">
             <div class="string-container"><input type="text" id="pve-normal-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('pve-normal-str', this)">Copy String</button></div>
@@ -300,8 +226,7 @@
         </div>
 
         <div class="section-header color-others" onclick="toggleSection(this)">
-            <h2 class="section-title">📁 Others</h2>
-            <span class="collapse-arrow">▼</span>
+            <h2 class="section-title">📁 Others</h2><span class="collapse-arrow">▼</span>
         </div>
         <div class="collapsible-content">
             <div class="string-container"><input type="text" id="others-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('others-str', this)">Copy String</button></div>
@@ -309,8 +234,7 @@
         </div>
 
         <div class="section-header color-unown" onclick="toggleSection(this)">
-            <h2 class="section-title">🔤 Unown Shiny</h2>
-            <span class="collapse-arrow">▼</span>
+            <h2 class="section-title">🔤 Unown Shiny</h2><span class="collapse-arrow">▼</span>
         </div>
         <div class="collapsible-content">
             <div class="string-container"><input type="text" id="unown-str" class="string-input" readonly><button class="copy-btn" onclick="copyString('unown-str', this)">Copy String</button></div>
@@ -320,7 +244,6 @@
 
     <div id="tab-oferuje" class="tab-content">
         <div class="section-title color-offer" style="margin-top: 10px; margin-bottom: 15px;">✨ My Pokémon Offer</div>
-        
         <div id="total-sum" class="summary-badge">Total Pokémon available: Calculating...</div>
 
         <div class="filter-container">
@@ -335,46 +258,90 @@
                 <div class="section-header color-region" onclick="toggleSection(this)"><h3 class="section-title">🗻 Kanto Region</h3><span class="collapse-arrow">▼</span></div>
                 <div class="collapsible-content"><div id="kanto-grid" class="pokemon-grid"></div></div>
             </div>
-
             <div class="region-block" data-region="johto">
                 <div class="section-header color-region" onclick="toggleSection(this)"><h3 class="section-title">🌲 Johto Region</h3><span class="collapse-arrow">▼</span></div>
                 <div class="collapsible-content"><div id="johto-grid" class="pokemon-grid"></div></div>
             </div>
-
             <div class="region-block" data-region="hoenn">
                 <div class="section-header color-region" onclick="toggleSection(this)"><h3 class="section-title">🌊 Hoenn Region</h3><span class="collapse-arrow">▼</span></div>
                 <div class="collapsible-content"><div id="hoenn-grid" class="pokemon-grid"></div></div>
             </div>
-
             <div class="region-block" data-region="sinnoh">
                 <div class="section-header color-region" onclick="toggleSection(this)"><h3 class="section-title">🏔️ Sinnoh Region</h3><span class="collapse-arrow">▼</span></div>
                 <div class="collapsible-content"><div id="sinnoh-grid" class="pokemon-grid"></div></div>
             </div>
-
             <div class="region-block" data-region="unova">
                 <div class="section-header color-region" onclick="toggleSection(this)"><h3 class="section-title">🏙️ Unova Region</h3><span class="collapse-arrow">▼</span></div>
                 <div class="collapsible-content"><div id="unova-grid" class="pokemon-grid"></div></div>
             </div>
-
             <div class="region-block" data-region="kalos">
                 <div class="section-header color-region" onclick="toggleSection(this)"><h3 class="section-title">🏰 Kalos Region</h3><span class="collapse-arrow">▼</span></div>
                 <div class="collapsible-content"><div id="kalos-grid" class="pokemon-grid"></div></div>
             </div>
-
             <div class="region-block" data-region="alola">
                 <div class="section-header color-region" onclick="toggleSection(this)"><h3 class="section-title">☀️ Alola Region</h3><span class="collapse-arrow">▼</span></div>
                 <div class="collapsible-content"><div id="alola-grid" class="pokemon-grid"></div></div>
             </div>
-
             <div class="region-block" data-region="galar">
                 <div class="section-header color-region" onclick="toggleSection(this)"><h3 class="section-title">🛡️ Galar Region</h3><span class="collapse-arrow">▼</span></div>
                 <div class="collapsible-content"><div id="galar-grid" class="pokemon-grid"></div></div>
             </div>
-
             <div class="region-block" data-region="paldea">
                 <div class="section-header color-region" onclick="toggleSection(this)"><h3 class="section-title">🍇 Paldea Region</h3><span class="collapse-arrow">▼</span></div>
                 <div class="collapsible-content"><div id="paldea-grid" class="pokemon-grid"></div></div>
             </div>
+        </div>
+    </div>
+
+    <div id="tab-kalendarz" class="tab-content">
+        <div class="calendar-wrapper">
+            <div id="calendar-month-title" class="calendar-header">Month Year</div>
+            <div class="calendar-grid" id="calendar-grid-target"></div>
+        </div>
+    </div>
+
+    <div id="booking-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modal-date-display" class="modal-title">Trade Date: </div>
+            <form id="trade-booking-form" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" id="form-date-field">
+                
+                <div class="form-group">
+                    <label>In-Game Nickname *</label>
+                    <input type="text" id="form-nickname" required placeholder="Enter your trainer name">
+                </div>
+
+                <div class="form-group">
+                    <label>Trade Type *</label>
+                    <select id="form-tradetype" required></select>
+                </div>
+
+                <div class="form-group">
+                    <label>What you want from me * (Max 3, 1st mandatory)</label>
+                    <div class="form-row-3">
+                        <input type="text" id="form-want1" required placeholder="Pokemon 1">
+                        <input type="text" id="form-want2" placeholder="Pokemon 2">
+                        <input type="text" id="form-want3" placeholder="Pokemon 3">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>What you offer * (Max 3, 1st mandatory)</label>
+                    <div class="form-row-3">
+                        <input type="text" id="form-offer1" required placeholder="Pokemon 1">
+                        <input type="text" id="form-offer2" placeholder="Pokemon 2">
+                        <input type="text" id="form-offer3" placeholder="Pokemon 3">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Contact Info (Optional)</label>
+                    <input type="text" id="form-contact" placeholder="Discord, Telegram, Phone...">
+                </div>
+
+                <button type="submit" class="submit-btn">Save Booking</button>
+            </form>
         </div>
     </div>
 
@@ -383,25 +350,48 @@
         const SPREADSHEET_ID = '1S2YVZOPnkP7AtgfhdDK3OrDOmtaGo6qsmKHMAxp8vfo';
         const WISHLIST_GID = '0';          
         const OFFER_GID = '1184870881';     
+        const CALENDAR_GID = '2049102919'; // <- UZUPEŁNIJ: Wpisz tutaj GID nowej zakładki "calendar"
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwX_WKLEJ..._TUTAJ_WKLEJ_SWÓJ_URL_/exec'; // <- UZUPEŁNIJ
 
         const regionThresholds = [
-            { name: "kanto", min: 1, max: 151 },
-            { name: "johto", min: 152, max: 251 },
-            { name: "hoenn", min: 252, max: 386 },
-            { name: "sinnoh", min: 387, max: 493 },
-            { name: "unova", min: 494, max: 649 },
-            { name: "kalos", min: 650, max: 721 },
-            { name: "alola", min: 722, max: 809 },
-            { name: "galar", min: 810, max: 905 },
+            { name: "kanto", min: 1, max: 151 }, { name: "johto", min: 152, max: 251 },
+            { name: "hoenn", min: 252, max: 386 }, { name: "sinnoh", min: 387, max: 493 },
+            { name: "unova", min: 494, max: 649 }, { name: "kalos", min: 650, max: 721 },
+            { name: "alola", min: 722, max: 809 }, { name: "galar", min: 810, max: 905 },
             { name: "paldea", min: 906, max: 9999 }
         ];
+
+        const regionalImageMap = {
+            "rattata-alola": "https://img.pokemondb.net/sprites/home/shiny/rattata-alolan.png",
+            "sandshrew-alola": "https://img.pokemondb.net/sprites/home/shiny/sandshrew-alolan.png",
+            "vulpix-alola": "https://img.pokemondb.net/sprites/home/shiny/vulpix-alolan.png",
+            "diglett-alola": "https://img.pokemondb.net/sprites/home/shiny/diglett-alolan.png",
+            "meowth-alola": "https://img.pokemondb.net/sprites/home/shiny/meowth-alolan.png",
+            "meowth-galar": "https://img.pokemondb.net/sprites/home/shiny/meowth-galarian.png",
+            "growlithe-hisui": "https://img.pokemondb.net/sprites/home/shiny/growlithe-hisuian.png",
+            "geodude-alola": "https://img.pokemondb.net/sprites/home/shiny/geodude-alolan.png",
+            "ponyta-galar": "https://img.pokemondb.net/sprites/home/shiny/ponyta-galarian.png",
+            "slowpoke-galar": "https://img.pokemondb.net/sprites/home/shiny/slowpoke-galarian.png",
+            "farfetchd-galar": "https://img.pokemondb.net/sprites/home/shiny/farfetchd-galarian.png",
+            "grimer-alola": "https://img.pokemondb.net/sprites/home/shiny/grimer-alolan.png",
+            "exeggutor-alola": "https://img.pokemondb.net/sprites/home/shiny/exeggutor-alolan.png",
+            "marowak-alola": "https://img.pokemondb.net/sprites/home/shiny/marowak-alolan.png",
+            "golem-alola": "https://img.pokemondb.net/sprites/home/shiny/golem-alolan.png",
+            "rapidash-galar": "https://img.pokemondb.net/sprites/home/shiny/rapidash-galarian.png",
+            "voltorb-hisui": "https://img.pokemondb.net/sprites/home/shiny/voltorb-hisuian.png",
+            "zigzagoon-galar": "https://img.pokemondb.net/sprites/home/shiny/zigzagoon-galarian.png",
+            "samurott-hisui": "https://img.pokemondb.net/sprites/home/shiny/samurott-hisuian.png",
+            "qwilfish-hisui": "https://img.pokemondb.net/sprites/home/shiny/qwilfish-hisuian.png",
+            "sneasel-hisui": "https://img.pokemondb.net/sprites/home/shiny/sneasel-hisuian.png",
+            "wooper-paldea": "https://img.pokemondb.net/sprites/home/shiny/wooper-paldean.png",
+            "yamask-galar": "https://img.pokemondb.net/sprites/home/shiny/yamask-galarian.png",
+            "palkia-origin": "https://img.pokemondb.net/sprites/home/shiny/palkia-origin.png"
+        };
 
         async function fetchSheetData(gid) {
             const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${gid}`;
             const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Nie udało się pobrać danych dla GID: ${gid}`);
-            }
+            if (!response.ok) throw new Error(`Fetch fail GID: ${gid}`);
             const csvText = await response.text();
             return parseCSV(csvText);
         }
@@ -409,13 +399,10 @@
         function parseCSV(text) {
             const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
             if (lines.length === 0) return [];
-
             const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
-
             return lines.slice(1).map(line => {
                 const values = line.split(',').map(v => v.replace(/^"|"$/g, '').trim());
                 const obj = {};
-
                 headers.forEach((header, index) => {
                     let val = values[index] !== undefined ? values[index] : '';
                     if (val.toLowerCase() === 'true') val = true;
@@ -431,6 +418,11 @@
             try {
                 window.listaSzukam = await fetchSheetData(WISHLIST_GID);
                 window.myShinyCollection = await fetchSheetData(OFFER_GID);
+                try {
+                    window.existingBookings = await fetchSheetData(CALENDAR_GID);
+                } catch(e) {
+                    window.existingBookings = []; // Fallback na wypadek braku wpisów
+                }
 
                 generate('pve-shiny', 'pve-shiny-grid', 'pve-shiny-str', '!traded&shiny&');
                 generate('pve-legacy', 'pve-legacy-grid', 'pve-legacy-str', '!traded&@special&');
@@ -440,214 +432,222 @@
                 generate('unown', 'unown-grid', 'unown-str', '!traded&shiny&unown');
                 
                 generateOfferTab();
+                buildCalendar();
             } catch (error) {
                 console.error("Critical error initialization:", error);
-                const totalSumBadge = document.getElementById('total-sum');
-                if (totalSumBadge) {
-                    totalSumBadge.innerText = "Error loading data from Google Sheets!";
-                    totalSumBadge.style.color = "#e74c3c";
-                }
+                document.getElementById('total-sum').innerText = "Error loading data!";
             }
         }
 
         document.addEventListener('DOMContentLoaded', initApplication);
         
-        function toggleSection(headerElement) {
-            headerElement.classList.toggle('active');
-        }
+        function toggleSection(headerElement) { headerElement.classList.toggle('active'); }
 
         function generate(targetCategory, gridId, stringId, prefix) {
             const grid = document.getElementById(gridId);
-            if (!grid) return;
-
-            if (typeof listaSzukam === 'undefined') return;
-
+            if (!grid || typeof listaSzukam === 'undefined') return;
             const namesForString = [];
             const filteredList = listaSzukam.filter(poko => poko.category === targetCategory);
-
             filteredList.forEach(poko => {
                 const isUnown = (poko.category === 'unown');
                 const nameForSearch = isUnown ? "unown" : poko.name.split('-')[0].toLowerCase();
-                
-                if(!namesForString.includes(nameForSearch)) {
-                    namesForString.push(nameForSearch);
-                }
-
+                if(!namesForString.includes(nameForSearch)) namesForString.push(nameForSearch);
                 const displayName = isUnown ? 'Unown ' + poko.name.toUpperCase() : poko.name.split('-')[0];
                 const folder = poko.isShiny ? "shiny" : "normal";
-                
                 let imgUrl = `https://img.pokemondb.net/sprites/home/${folder}/${poko.name.toLowerCase()}.png`;
-                if(isUnown) {
-                    imgUrl = `https://img.pokemondb.net/sprites/home/shiny/unown-${poko.name.toLowerCase()}.png`;
-                }
-
+                if(isUnown) imgUrl = `https://img.pokemondb.net/sprites/home/shiny/unown-${poko.name.toLowerCase()}.png`;
                 const card = document.createElement('div');
                 card.className = 'pokemon-card';
-                card.innerHTML = `
-                    <img src="${imgUrl}" alt="${poko.name}" onerror="this.src='https://img.pokemondb.net/sprites/sword-shield/icon/${nameForSearch}.png';">
-                    <div class="pokemon-name">${poko.isShiny ? '✨ ' : ''}${displayName}</div>
-                `;
+                card.innerHTML = `<img src="${imgUrl}" alt="${poko.name}" onerror="this.src='https://img.pokemondb.net/sprites/sword-shield/icon/${nameForSearch}.png';"><div class="pokemon-name">${poko.isShiny ? '✨ ' : ''}${displayName}</div>`;
                 grid.appendChild(card);
             });
-            
             document.getElementById(stringId).value = `${prefix}${[...new Set(namesForString)].join(',')}`;
         }
-// BRAMKA LOGICZNA DLA FORM REGIONALNYCH I SPECJALNYCH
-const regionalImageMap = {
-    // KANTO REGIONALS
-    "rattata-alola": "https://img.pokemondb.net/sprites/home/shiny/rattata-alolan.png",
-    "sandshrew-alola": "https://img.pokemondb.net/sprites/home/shiny/sandshrew-alolan.png",
-    "vulpix-alola": "https://img.pokemondb.net/sprites/home/shiny/vulpix-alolan.png",
-    "diglett-alola": "https://img.pokemondb.net/sprites/home/shiny/diglett-alolan.png",
-    "meowth-alola": "https://img.pokemondb.net/sprites/home/shiny/meowth-alolan.png",
-    "meowth-galar": "https://img.pokemondb.net/sprites/home/shiny/meowth-galarian.png",
-    "growlithe-hisui": "https://img.pokemondb.net/sprites/home/shiny/growlithe-hisuian.png",
-    "geodude-alola": "https://img.pokemondb.net/sprites/home/shiny/geodude-alolan.png",
-    "ponyta-galar": "https://img.pokemondb.net/sprites/home/shiny/ponyta-galarian.png",
-    "slowpoke-galar": "https://img.pokemondb.net/sprites/home/shiny/slowpoke-galarian.png",
-    "farfetchd-galar": "https://img.pokemondb.net/sprites/home/shiny/farfetchd-galarian.png",
-    "grimer-alola": "https://img.pokemondb.net/sprites/home/shiny/grimer-alolan.png",
-    "exeggutor-alola": "https://img.pokemondb.net/sprites/home/shiny/exeggutor-alolan.png",
-    "marowak-alola": "https://img.pokemondb.net/sprites/home/shiny/marowak-alolan.png",
 
-    // JOHTO REGIONALS
-    "qwilfish-hisui": "https://img.pokemondb.net/sprites/home/shiny/qwilfish-hisuian.png",
-    "sneasel-hisui": "https://img.pokemondb.net/sprites/home/shiny/sneasel-hisuian.png",
-    "wooper-paldea": "https://img.pokemondb.net/sprites/home/shiny/wooper-paldean.png",
-
-    // OTHERS / SPECIAL
-    "yamask-galar": "https://img.pokemondb.net/sprites/home/shiny/yamask-galarian.png",
-    "palkia-origin": "https://img.pokemondb.net/sprites/home/shiny/palkia-origin.png",
-    
-    "golem-alola": "https://img.pokemondb.net/sprites/home/shiny/golem-alolan.png",
-    "rapidash-galar": "https://img.pokemondb.net/sprites/home/shiny/rapidash-galarian.png",
-    "voltorb-hisui": "https://img.pokemondb.net/sprites/home/shiny/voltorb-hisuian.png",
-    "zigzagoon-galar": "https://img.pokemondb.net/sprites/home/shiny/zigzagoon-galarian.png",
-    "samurott-hisui": "https://img.pokemondb.net/sprites/home/shiny/samurott-hisuian.png"
-};
-        
-function generateOfferTab() {
-    let totalCount = 0;
-    
-    // Sprawdzenie, czy dane zostały poprawnie pobrane z Google Sheets
-    if (typeof myShinyCollection === 'undefined' || myShinyCollection.length === 0) {
-        console.warn("Brak danych w myShinyCollection. Czekam na załadowanie...");
-        return;
-    }
-
-    // 1. Czyszczenie wszystkich kontenerów przed generowaniem (zapobiega duplikatom)
-    document.querySelectorAll('#my-offer-grid-container .pokemon-grid').forEach(grid => grid.innerHTML = '');
-
-    // 2. Sortowanie całej kolekcji według National Dex ID (rosnąco)
-    myShinyCollection.sort((a, b) => a.id - b.id);
-
-    // 3. Iteracja przez każdego Pokémona w kolekcji
-    myShinyCollection.forEach(poko => {
-        // Sumowanie ogólnej liczby sztuk
-        totalCount += poko.count;
-
-        // DYNAMICZNA SEGMENTACJA: Szukanie regionu na podstawie zakresu ID
-        const regionMatch = regionThresholds.find(r => poko.id >= r.min && poko.id <= r.max);
-        if (!regionMatch) {
-            console.error(`Nie znaleziono regionu dla Pokémona o ID: ${poko.id}`);
-            return;
+        function generateOfferTab() {
+            let totalCount = 0;
+            if (typeof myShinyCollection === 'undefined') return;
+            document.querySelectorAll('#my-offer-grid-container .pokemon-grid').forEach(grid => grid.innerHTML = '');
+            myShinyCollection.sort((a, b) => a.id - b.id);
+            myShinyCollection.forEach(poko => {
+                totalCount += poko.count;
+                const regionMatch = regionThresholds.find(r => poko.id >= r.min && poko.id <= r.max);
+                if (!regionMatch) return;
+                const grid = document.getElementById(`${regionMatch.name}-grid`);
+                if (!grid) return;
+                let nameKey = poko.name.toLowerCase();
+                let imgUrl = regionalImageMap[nameKey] ? regionalImageMap[nameKey] : `https://img.pokemondb.net/sprites/home/shiny/${poko.costume ? nameKey.split('-')[0] : nameKey}.png`;
+                const displayKey = poko.displayName ? poko.displayName : poko.name;
+                let prefix = '';
+                if (poko.isShiny) prefix += '✨ ';
+                if (poko.costume) prefix += '🤠 ';
+                if (poko.background) prefix += '🖼️ ';
+                const card = document.createElement('div');
+                card.className = 'pokemon-card';
+                card.setAttribute('data-type', poko.type);
+                card.innerHTML = `<div class="count-badge">${poko.count}</div><img src="${imgUrl}" alt="${displayKey}" style="min-height: 80px;" onerror="this.onerror=null; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';"><div class="pokemon-name">${prefix}${displayKey}</div>`;
+                grid.appendChild(card);
+            });
+            document.getElementById('total-sum').innerText = `Total Pokémon available: ${totalCount}`;
+            document.querySelectorAll('.region-block').forEach(block => { block.style.display = block.querySelectorAll('.pokemon-card').length > 0 ? '' : 'none'; });
         }
-
-        // Pobranie odpowiedniego kontenera grid dla danego regionu
-        const grid = document.getElementById(`${regionMatch.name}-grid`);
-        if (!grid) return;
-
-        let nameKey = poko.name.toLowerCase();
-        let imgUrl;
-
-        // BRAMKA LOGICZNA: Sprawdzenie wyjątków dla form regionalnych w regionalImageMap
-        if (typeof regionalImageMap !== 'undefined' && regionalImageMap[nameKey]) {
-            imgUrl = regionalImageMap[nameKey];
-        } else {
-            // Standardowa procedura budowania linku (Shiny)
-            let imgKey = nameKey;
-            // Jeśli to kostium, używamy nazwy bazowej dla grafiki modelu 3D
-            if (poko.costume) imgKey = nameKey.split('-')[0];
-            imgUrl = `https://img.pokemondb.net/sprites/home/shiny/${imgKey}.png`;
-        }
-
-        // Ustalenie wyświetlanej nazwy (priorytet dla displayName z Arkusza)
-        const displayKey = poko.displayName ? poko.displayName : poko.name;
-
-        // Logika ikon przed nazwą (prefixy)
-        let prefix = '';
-        if (poko.isShiny) prefix += '✨ ';
-        if (poko.costume) prefix += '🤠 ';
-        if (poko.background) prefix += '🖼️ ';
-
-        // Tworzenie elementu karty Pokémona
-        const card = document.createElement('div');
-        card.className = 'pokemon-card';
-        card.setAttribute('data-type', poko.type); // Atrybut potrzebny do filtrowania (Costume/Regional itp.)
-        
-        card.innerHTML = `
-            <div class="count-badge">${poko.count}</div>
-            <img src="${imgUrl}" alt="${displayKey}" 
-                 style="min-height: 80px;" 
-                 onerror="this.onerror=null; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';">
-            <div class="pokemon-name">${prefix}${displayKey}</div>
-        `;
-        
-        grid.appendChild(card);
-    });
-
-    // 4. Aktualizacja licznika "Total Pokémon" na stronie
-    const totalSumLabel = document.getElementById('total-sum');
-    if (totalSumLabel) {
-        totalSumLabel.innerText = `Total Pokémon available: ${totalCount}`;
-    }
-
-    // 5. Ukrywanie bloków regionów, które po wygenerowaniu pozostały puste
-    document.querySelectorAll('.region-block').forEach(block => {
-        const hasVisibleCards = block.querySelectorAll('.pokemon-card').length > 0;
-        block.style.display = hasVisibleCards ? '' : 'none';
-    });
-}
 
         function filterOffer(type, button) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-
-            const cards = document.querySelectorAll('#my-offer-grid-container .pokemon-card');
-            cards.forEach(card => {
-                const cardType = card.getAttribute('data-type');
-                if (type === 'all' || cardType === type) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
+            document.querySelectorAll('#my-offer-grid-container .pokemon-card').forEach(card => {
+                card.style.display = (type === 'all' || card.getAttribute('data-type') === type) ? '' : 'none';
             });
-
             document.querySelectorAll('.region-block').forEach(block => {
-                const visibleCards = block.querySelectorAll('.pokemon-card:not([style*="display: none"])');
-                if (visibleCards.length === 0) {
-                    block.style.display = 'none';
-                } else {
-                    block.style.display = '';
-                }
+                block.style.display = block.querySelectorAll('.pokemon-card:not([style*="display: none"])').length === 0 ? 'none' : '';
             });
         }
 
         function switchTab(tabId, button) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
             document.querySelectorAll('.section-header').forEach(h => h.classList.remove('active'));
-
             document.getElementById(tabId).classList.add('active');
             button.classList.add('active');
         }
 
         function copyString(id, btn) {
-            const el = document.getElementById(id);
-            navigator.clipboard.writeText(el.value);
+            navigator.clipboard.writeText(document.getElementById(id).value);
             const old = btn.innerText; btn.innerText = "COPIED!";
             setTimeout(() => btn.innerText = old, 1500);
+        }
+
+        /* ENGINE KALENDARZA */
+        function buildCalendar() {
+            const grid = document.getElementById('calendar-grid-target');
+            const monthTitle = document.getElementById('calendar-month-title');
+            grid.innerHTML = '';
+
+            const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            weekdays.forEach(day => {
+                const label = document.createElement('div');
+                label.className = 'weekday-label';
+                label.innerText = day;
+                grid.appendChild(label);
+            });
+
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth(); // Bieżący miesiąc (0-11)
+
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            monthTitle.innerText = `${monthNames[month]} ${year}`;
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const remappedFirstDay = firstDayIndex === 0 ? 6 : firstDayIndex - 1; // Konwersja na format Mon-Sun
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Puste kafelek wyrównujące początek miesiąca
+            for (let i = 0; i < remappedFirstDay; i++) {
+                grid.appendChild(document.createElement('div'));
+            }
+
+            // Generowanie dni miesiąca
+            for (let day = 1; day <= totalDays; day++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                dayDiv.innerText = day;
+
+                const checkDate = new Date(year, month, day);
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+                // Sprawdzanie czy dzień minął
+                const comparisonToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                
+                if (checkDate < comparisonToday) {
+                    dayDiv.classList.add('day-past');
+                } else {
+                    if (checkDate.getTime() === comparisonToday.getTime()) {
+                        dayDiv.classList.add('day-current');
+                    }
+                    
+                    // Klasyfikacja koloru na podstawie rezerwacji z bazy
+                    const status = getDayStatus(dateStr);
+                    dayDiv.classList.add(status.className);
+
+                    if (status.className !== 'day-red') {
+                        dayDiv.onclick = () => openBookingModal(dateStr, status.remoteFree, status.regularFree);
+                    }
+                }
+                grid.appendChild(dayDiv);
+            }
+        }
+
+        // Pobieranie statusu zajętości terminów na dany dzień
+        function getDayStatus(dateStr) {
+            if (!window.existingBookings) return { className: 'day-dark-green', remoteFree: true, regularFree: true };
+
+            const daysTrades = window.existingBookings.filter(b => b.date === dateStr);
+            const remoteTaken = daysTrades.some(b => b.tradeType === 'remote');
+            const regularTaken = daysTrades.some(b => b.tradeType === 'regular');
+
+            if (remoteTaken && regularTaken) return { className: 'day-red', remoteFree: false, regularFree: false };
+            if (remoteTaken && !regularTaken) return { className: 'day-light-green', remoteFree: false, regularFree: true };
+            if (!remoteTaken && regularTaken) return { className: 'day-yellow', remoteFree: true, regularFree: false };
+            return { className: 'day-dark-green', remoteFree: true, regularFree: true };
+        }
+
+        function openBookingModal(dateStr, remoteFree, regularFree) {
+            document.getElementById('form-date-field').value = dateStr;
+            document.getElementById('modal-date-display').innerText = `Trade Date: ${dateStr}`;
+            
+            const select = document.getElementById('form-tradetype');
+            select.innerHTML = '';
+
+            if (remoteFree) select.appendChild(new Option('Remote Trade', 'remote'));
+            if (regularFree) select.appendChild(new Option('Regular / In-Person Trade', 'regular'));
+
+            document.getElementById('booking-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('booking-modal').style.display = 'none';
+            document.getElementById('trade-booking-form').reset();
+        }
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            const submitBtn = event.target.querySelector('.submit-btn');
+            submitBtn.innerText = "Saving... Please wait";
+            submitBtn.disabled = true;
+
+            const payload = {
+                date: document.getElementById('form-date-field').value,
+                nickname: document.getElementById('form-nickname').value,
+                tradeType: document.getElementById('form-tradetype').value,
+                want1: document.getElementById('form-want1').value,
+                want2: document.getElementById('form-want2').value,
+                want3: document.getElementById('form-want3').value,
+                offer1: document.getElementById('form-offer1').value,
+                offer2: document.getElementById('form-offer2').value,
+                offer3: document.getElementById('form-offer3').value,
+                contact: document.getElementById('form-contact').value
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Wymagane dla Google Apps Script Web App bez problemów CORS
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                alert("Booking submitted successfully! Refreshing view...");
+                closeModal();
+                // Ponowne załadowanie danych i kalendarza w celu zaktualizowania koloru na żywo
+                initApplication();
+            } catch (error) {
+                console.error("Error saving booking:", error);
+                alert("Critical error during save procedure.");
+            } finally {
+                submitBtn.innerText = "Save Booking";
+                submitBtn.disabled = false;
+            }
         }
     </script>
 </body>
