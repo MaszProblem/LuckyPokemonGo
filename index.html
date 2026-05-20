@@ -248,9 +248,13 @@
 
         <div class="filter-container">
             <button class="filter-btn active" onclick="filterOffer('all', this)">All</button>
+            <button class="filter-btn" onclick="filterOffer('normal-non-shiny', this)">Normal</button>
+            <button class="filter-btn" onclick="filterOffer('shiny', this)">Shiny</button>
             <button class="filter-btn" onclick="filterOffer('costume', this)">Costume</button>
-            <button class="filter-btn" onclick="filterOffer('regional', this)">Regional (GO Exclusive)</button>
             <button class="filter-btn" onclick="filterOffer('background', this)">Background</button>
+            <button class="filter-btn" onclick="filterOffer('localBackground', this)">Local Background</button>
+            <button class="filter-btn" onclick="filterOffer('gigantamax', this)">Gigantamax</button>
+            <button class="filter-btn" onclick="filterOffer('regional', this)">Regional (GO)</button>
         </div>
 
         <div id="my-offer-grid-container">
@@ -533,8 +537,9 @@ function generateOfferTab() {
         // Prefiksy ikon
         let prefix = '';
         if (poko.isShiny || poko.shiny) prefix += '✨ ';
-        if (poko.costume) prefix += '🤠 ';
-        if (poko.background) prefix += '🖼️ ';
+        if (poko.costume) prefix += '🎩 ';
+        if (poko.background || poko.localBackground) prefix += '🖼️ ';
+        if (poko.gigantamax || poko.gmax) prefix += '<span style="color: #e74c3c; font-weight: bold;">X</span> ';
 
         const card = document.createElement('div');
         card.className = 'pokemon-card';
@@ -563,16 +568,56 @@ function generateOfferTab() {
     });
 }
 
-        function filterOffer(type, button) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            document.querySelectorAll('#my-offer-grid-container .pokemon-card').forEach(card => {
-                card.style.display = (type === 'all' || card.getAttribute('data-type') === type) ? '' : 'none';
-            });
-            document.querySelectorAll('.region-block').forEach(block => {
-                block.style.display = block.querySelectorAll('.pokemon-card:not([style*="display: none"])').length === 0 ? 'none' : '';
-            });
+        function filterOffer(filterType, button) {
+    // 1. Wizualna zmiana aktywnego przycisku
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+
+    // 2. Filtrowanie kart
+    const cards = document.querySelectorAll('#my-offer-grid-container .pokemon-card');
+    
+    // Pobieramy aktualne dane z pamięci, żeby mieć dostęp do flag (nie tylko do HTML)
+    // Mapujemy karty do obiektów z myShinyCollection (zakładając sortowanie)
+    cards.forEach((card, index) => {
+        const poko = myShinyCollection[index]; 
+        let isVisible = false;
+
+        switch(filterType) {
+            case 'all':
+                isVisible = true;
+                break;
+            case 'normal-non-shiny':
+                isVisible = !(poko.isShiny || poko.shiny);
+                break;
+            case 'shiny':
+                isVisible = (poko.isShiny || poko.shiny);
+                break;
+            case 'costume':
+                isVisible = poko.costume === true;
+                break;
+            case 'background':
+                isVisible = poko.background === true;
+                break;
+            case 'localBackground':
+                isVisible = poko.localBackground === true;
+                break;
+            case 'gigantamax':
+                isVisible = (poko.gigantamax === true || poko.gmax === true);
+                break;
+            case 'regional':
+                isVisible = poko.type === 'regional';
+                break;
         }
+
+        card.style.display = isVisible ? '' : 'none';
+    });
+
+    // 3. Ukrywanie pustych bloków regionów
+    document.querySelectorAll('.region-block').forEach(block => {
+        const visibleCards = block.querySelectorAll('.pokemon-card:not([style*="display: none"])');
+        block.style.display = visibleCards.length === 0 ? 'none' : '';
+    });
+}
 
         function switchTab(tabId, button) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
