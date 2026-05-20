@@ -702,13 +702,27 @@ function updateDatalists() {
     const offerList = document.getElementById('offer-names-list');
     const wishList = document.getElementById('wishlist-names-list');
     
-    // Pobierz unikalne nazwy z Twojej oferty
-    const myOfferNames = [...new Set(window.myShinyCollection.map(p => p.displayName || p.name))];
-    offerList.innerHTML = myOfferNames.map(name => `<option value="${name}">`).join('');
+    if (!offerList || !wishList) return;
+
+    // 1. Obsługa Twojej Oferty (użytkownik wybiera co CHCE od Ciebie)
+    // Tworzymy unikalne nazwy z dopiskiem (*) dla Shiny
+    const myOfferOptions = window.myShinyCollection.map(p => {
+        const baseName = p.displayName || p.name;
+        return p.isShiny ? `${baseName} (*)` : baseName;
+    });
+    const uniqueOfferOptions = [...new Set(myOfferOptions)];
+    offerList.innerHTML = uniqueOfferOptions.map(name => `<option value="${name}">`).join('');
     
-    // Pobierz unikalne nazwy z Twojej wishlisty
-    const myWishNames = [...new Set(window.listaSzukam.map(p => p.name))];
-    wishList.innerHTML = myWishNames.map(name => `<option value="${name}">`).join('');
+    // 2. Obsługa Twojej Wishlisty (użytkownik wybiera co CI OFERUJE)
+    const myWishOptions = window.listaSzukam.map(p => {
+        const baseName = p.name;
+        // Sprawdzamy czy w szukam.js flaga isShiny jest prawdziwa
+        return p.isShiny ? `${baseName} (*)` : baseName;
+    });
+    const uniqueWishOptions = [...new Set(myWishOptions)];
+    wishList.innerHTML = uniqueWishOptions.map(name => `<option value="${name}">`).join('');
+    
+    console.log("Datalists updated with Shiny markers (*)");
 }
     </script>
 <datalist id="offer-names-list"></datalist>
