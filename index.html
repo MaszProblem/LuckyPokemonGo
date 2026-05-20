@@ -621,44 +621,45 @@ function buildCalendar() {
         }
 
         async function handleFormSubmit(event) {
-            event.preventDefault();
-            const submitBtn = event.target.querySelector('.submit-btn');
-            submitBtn.innerText = "Saving... Please wait";
-            submitBtn.disabled = true;
+    event.preventDefault();
+    const submitBtn = event.target.querySelector('.submit-btn');
+    const originalText = submitBtn.innerText;
+    
+    submitBtn.innerText = "Saving...";
+    submitBtn.disabled = true;
 
-            const payload = {
-                date: document.getElementById('form-date-field').value,
-                nickname: document.getElementById('form-nickname').value,
-                tradeType: document.getElementById('form-tradetype').value,
-                want1: document.getElementById('form-want1').value,
-                want2: document.getElementById('form-want2').value,
-                want3: document.getElementById('form-want3').value,
-                offer1: document.getElementById('form-offer1').value,
-                offer2: document.getElementById('form-offer2').value,
-                offer3: document.getElementById('form-offer3').value,
-                contact: document.getElementById('form-contact').value
-            };
+    const formData = new FormData();
+    formData.append('date', document.getElementById('form-date-field').value);
+    formData.append('nickname', document.getElementById('form-nickname').value);
+    formData.append('tradeType', document.getElementById('form-tradetype').value);
+    formData.append('want1', document.getElementById('form-want1').value);
+    formData.append('want2', document.getElementById('form-want2').value || "");
+    formData.append('want3', document.getElementById('form-want3').value || "");
+    formData.append('offer1', document.getElementById('form-offer1').value);
+    formData.append('offer2', document.getElementById('form-offer2').value || "");
+    formData.append('offer3', document.getElementById('form-offer3').value || "");
+    formData.append('contact', document.getElementById('form-contact').value || "");
 
-            try {
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', // Wymagane dla Google Apps Script Web App bez problemów CORS
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                alert("Booking submitted successfully! Refreshing view...");
-                closeModal();
-                // Ponowne załadowanie danych i kalendarza w celu zaktualizowania koloru na żywo
-                initApplication();
-            } catch (error) {
-                console.error("Error saving booking:", error);
-                alert("Critical error during save procedure.");
-            } finally {
-                submitBtn.innerText = "Save Booking";
-                submitBtn.disabled = false;
-            }
-        }
+    try {
+        // Wysyłamy jako tradycyjny formularz (QueryString), co Google Script lubi najbardziej
+        const queryString = new URLSearchParams(formData).toString();
+        await fetch(APPS_SCRIPT_URL + "?" + queryString, {
+            method: 'POST'
+        });
+        
+        // Ponieważ Google Script przy POST zawsze wyrzuca CORS error (mimo że zapisuje), 
+        // zakładamy sukces jeśli nie wpadliśmy w catch w dziwny sposób lub po prostu dajemy timeout
+        alert("Request sent! Please check the calendar in a moment.");
+        closeModal();
+        initApplication(); // Odśwież dane
+    } catch (error) {
+        console.error("Save error:", error);
+        alert("There was a connection issue, but your trade might have been saved. Refresh the page.");
+    } finally {
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+    }
+}
     </script>
 </body>
 </html>
