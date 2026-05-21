@@ -294,6 +294,12 @@
                 console.error("Critical error initialization:", error);
                 document.getElementById('total-sum').innerText = "Error loading data!";
             }
+            // Wywołaj to w funkcji initApplication() lub na początku skryptu
+            google.script.run.withSuccessHandler(function(limits) {
+            EVENT_REGULAR_LIMITS = limits;
+            // Po pobraniu limitów odśwież kalendarz, aby kolory były poprawne
+            renderCalendar(); 
+            }).getEventLimits();
         }
 
         document.addEventListener('DOMContentLoaded', initApplication);
@@ -554,10 +560,8 @@ function buildCalendar() {
 }
 
         // Konfiguracja specjalnych limitów dla eventów (Data: Liczba Regular Tradów)
-    const EVENT_REGULAR_LIMITS = {
-        "2026-05-24": 3, // Przykład: Falinks Raid Day
-        "2026-06-15": 3  // Przykład: Inny event
-    };
+  let EVENT_REGULAR_LIMITS = {};
+
 
         // Pobieranie statusu zajętości terminów na dany dzień
     function getDayStatus(dateStr) {
