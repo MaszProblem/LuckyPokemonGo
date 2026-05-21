@@ -188,8 +188,8 @@
 <h1>GlupekzRivii Lucky Trade</h1>
 
 <div class="language-switcher" style="margin-bottom: 20px;">
-    <button onclick="setLanguage('pl')" id="lang-pl" class="filter-btn">PL</button>
-    <button onclick="setLanguage('en')" id="lang-en" class="filter-btn">EN</button>
+    <button onclick="setLanguage('pl')" id="lang-pl" class="filter-btn lang-btn">PL</button>
+    <button onclick="setLanguage('en')" id="lang-en" class="filter-btn lang-btn">EN</button>
 </div>
 
     <div class="tabs-container">
@@ -634,23 +634,24 @@ function generateOfferTab() {
     });
 }
 
-        function showTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     
     // Obsługa różnych ID tabów (szukam vs oferuje vs kalendarz)
-    let targetId = tabId;
-    if (tabId === 'offer') targetId = 'tab-oferuje';
-    if (tabId === 'wishlist') targetId = 'tab-szukam';
-    if (tabId === 'calendar') targetId = 'tab-kalendarz';
+        let targetId = tabId;
+        if (tabId === 'offer') targetId = 'tab-oferuje';
+        if (tabId === 'wishlist') targetId = 'tab-szukam';
+        if (tabId === 'calendar') targetId = 'tab-kalendarz';
 
-    const targetTab = document.getElementById(targetId);
-    if (targetTab) targetTab.classList.add('active');
+        const targetTab = document.getElementById(targetId);
+        if (targetTab) targetTab.classList.add('active');
     
     // Szukamy przycisku, który został kliknięty i dodajemy mu klasę active
-    if (event && event.currentTarget) {
-        event.currentTarget.classList.add('active');
-}
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
+        }
+     }
 
         function copyString(id, btn) {
             navigator.clipboard.writeText(document.getElementById(id).value);
@@ -762,11 +763,6 @@ function buildCalendar() {
     const submitBtn = event.target.querySelector('.submit-btn');
     const originalText = submitBtn.innerText;
     
-    // Blokada przycisku i zmiana tekstu (Feedback wizualny)
-        
-    submitBtn.innerText = alert(i18n[localStorage.getItem('preferredLang') || 'pl'].msg_success);
-    submitBtn.disabled = true;
-
     // Pobieranie danych z pól formularza
     const dateVal = document.getElementById('form-date-field').value;
     const nicknameVal = document.getElementById('form-nickname').value;
@@ -779,7 +775,6 @@ function buildCalendar() {
     const offer3Val = document.getElementById('form-offer3').value || "";
     const contactVal = document.getElementById('form-contact').value || "";
 
-    // Budowanie parametrów zapytania (QueryString)
     const params = new URLSearchParams({
         date: dateVal,
         nickname: nicknameVal,
@@ -795,9 +790,10 @@ function buildCalendar() {
 
     const fullUrl = APPS_SCRIPT_URL + "?" + params.toString();
 
-try {
-        // Poprawiony feedback wizualny
-        submitBtn.innerText = (localStorage.getItem('selectedLang') === 'pl') ? "Zapisywanie..." : "Saving...";
+    try {
+        // Feedback wizualny
+        const lang = localStorage.getItem('selectedLang') || 'pl';
+        submitBtn.innerText = (lang === 'pl') ? "Zapisywanie..." : "Saving...";
         submitBtn.disabled = true;
 
         fetch(fullUrl, { 
@@ -808,8 +804,6 @@ try {
         if (!window.existingBookings) window.existingBookings = [];
         window.existingBookings.push({ date: dateVal, tradeType: tradeTypeVal });
 
-        // Użycie klucza z lang.js dla komunikatu sukcesu
-        const lang = localStorage.getItem('selectedLang') || 'pl';
         alert(i18n[lang].msg_success);
         
         closeModal();
@@ -817,13 +811,14 @@ try {
 
     } catch (error) {
         console.error("Save error:", error);
-        alert("There was a connection issue. If your trade doesn't appear after refresh, try again.");
+        alert("Error!");
     } finally {
-        // Przywrócenie przycisku do stanu pierwotnego
         submitBtn.innerText = originalText;
         submitBtn.disabled = false;
     }
 }
+
+            
 function updateDatalists() {
     const offerList = document.getElementById('offer-names-list');
     const wishList = document.getElementById('wishlist-names-list');
@@ -874,9 +869,13 @@ function setLanguage(lang) {
     updateInterfaceLanguage(lang);
     
     // Wizualna zmiana przycisków PL/EN
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.id === `lang-${lang}`);
-    });
+    const btnPl = document.getElementById('lang-pl');
+    const btnEn = document.getElementById('lang-en');
+    
+    if(btnPl && btnEn) {
+        btnPl.classList.toggle('active', lang === 'pl');
+        btnEn.classList.toggle('active', lang === 'en');
+    }
 }
     </script>
 <datalist id="offer-names-list"></datalist>
