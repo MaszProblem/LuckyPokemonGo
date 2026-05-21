@@ -47,9 +47,19 @@ const i18n = {
     }
 };
 
-// Funkcja zmieniająca język
+// 1. Kluczowa funkcja aktualizująca tekst na stronie
+function updateInterfaceLanguage(lang) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[lang] && i18n[lang][key]) {
+            el.innerHTML = i18n[lang][key];
+        }
+    });
+}
+
+// 2. Funkcja zmieniająca język
 function setLanguage(lang) {
-    localStorage.setItem('selectedLang', lang);
+    localStorage.setItem('selectedLang', lang); // Używamy konsekwentnie 'selectedLang'
     updateInterfaceLanguage(lang);
     
     // Wizualna zmiana przycisków PL/EN
@@ -60,15 +70,11 @@ function setLanguage(lang) {
         btnPl.classList.toggle('active', lang === 'pl');
         btnEn.classList.toggle('active', lang === 'en');
     }
-
-    
-    // Klasa active dla przycisków
-    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`lang-${lang}`).classList.add('active');
 }
 
-// Inicjalizacja przy starcie strony
+// 3. Inicjalizacja przy starcie strony
 document.addEventListener('DOMContentLoaded', () => {
-    const savedLang = localStorage.getItem('preferredLang') || 'pl';
+    // Sprawdzamy ten sam klucz co w setLanguage
+    const savedLang = localStorage.getItem('selectedLang') || 'pl';
     setLanguage(savedLang);
 });
