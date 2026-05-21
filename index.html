@@ -193,8 +193,8 @@
 </div>
 
     <div class="tabs-container">
-    <button class="tab-btn" data-i18n="tab_wishlist" onclick="showTab('wishlist')"></button>
-    <button class="tab-btn active" data-i18n="tab_offer" onclick="showTab('offer')"></button>
+    <button class="tab-btn active" data-i18n="tab_wishlist" onclick="showTab('wishlist')"></button>
+    <button class="tab-btn" data-i18n="tab_offer" onclick="showTab('offer')"></button>
     <button class="tab-btn" data-i18n="tab_calendar" onclick="showTab('calendar')"></button>
 </div>
 
@@ -312,6 +312,9 @@
     <div class="calendar-day day-light-green"></div> 
     <span data-i18n="legend_regular_free"></span>
 </div>
+<div style="display: flex; align-items: center; gap: 8px;">
+    <div class="calendar-day day-yellow"></div> 
+    <span data-i18n="legend_yellow"></span> </div>
 <div style="display: flex; align-items: center; gap: 8px;">
     <div class="calendar-day day-red"></div> 
     <span data-i18n="legend_busy"></span>
@@ -790,12 +793,14 @@ function buildCalendar() {
 
     const fullUrl = APPS_SCRIPT_URL + "?" + params.toString();
 
-    try {
-        // Feedback wizualny
+try {
         const lang = localStorage.getItem('selectedLang') || 'pl';
+        
+        // POPRAWKA: Najpierw pobierz tekst, potem zablokuj przycisk
         submitBtn.innerText = (lang === 'pl') ? "Zapisywanie..." : "Saving...";
         submitBtn.disabled = true;
 
+        // WYSYŁKA - upewnij się, że fullUrl jest zdefiniowany powyżej w funkcji
         fetch(fullUrl, { 
             method: 'POST',
             mode: 'no-cors' 
