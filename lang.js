@@ -15,11 +15,12 @@ const i18n = {
         form_trade_type: "Typ Tradu:",
         form_i_want: "Co chcesz ode mnie (WANT):",
         form_i_offer: "Co Ty oferujesz (OFFER):",
-        form_contact: "Kontakt (Discord/Telegram):",
+        form_contact: "Kontakt (Discord/mess/telefon/itp):",
         btn_save: "Zapisz rezerwację",
-        legend_remote_free: "Dostępny Remote & Regular",
-        legend_regular_free: "Dostępny tylko Regular",
-        legend_busy: "Zajęty / Full",
+        legend_remote_free: "Dostępny Zdalny & lokalny",
+        legend_regular_free: "Dostępny tylko lokalny",
+        legend_yellow: "Dostępny tylko Zdalny",
+        legend_busy: "Brak możliwości na trade",
         msg_success: "Rezerwacja wysłana! Pojawi się w kalendarzu za chwilę."
     },
     en: {
@@ -42,6 +43,7 @@ const i18n = {
         btn_save: "Save Booking",
         legend_remote_free: "Remote & Regular Available",
         legend_regular_free: "Only Regular Available",
+        legend_yellow: "Remote Available (Regular taken)",
         legend_busy: "Full / Busy",
         msg_success: "Booking submitted! It will appear in the calendar shortly."
     }
