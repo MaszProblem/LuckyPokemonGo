@@ -1,7 +1,7 @@
 const i18n = {
     pl: {
         tab_offer: "OFERTA",
-        tab_wishlist: "WISHLIST",
+        tab_wishlist: "SZUKAM",
         tab_calendar: "KALENDARZ",
         filter_all: "Wszystkie",
         filter_normal: "Zwykłe",
