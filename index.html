@@ -553,32 +553,61 @@ function buildCalendar() {
     }
 }
 
+        // Konfiguracja specjalnych limitów dla eventów (Data: Liczba Regular Tradów)
+    const EVENT_REGULAR_LIMITS = {
+        "2026-05-24": 3, // Przykład: Falinks Raid Day
+        "2026-06-15": 3  // Przykład: Inny event
+    };
+
         // Pobieranie statusu zajętości terminów na dany dzień
-        function getDayStatus(dateStr) {
-            if (!window.existingBookings) return { className: 'day-dark-green', remoteFree: true, regularFree: true };
+    function getDayStatus(dateStr) {
+        if (!window.existingBookings) return { className: 'day-dark-green', remoteFree: true, regularFree: true };
 
-            const daysTrades = window.existingBookings.filter(b => b.date === dateStr);
-            const remoteTaken = daysTrades.some(b => b.tradeType === 'remote');
-            const regularTaken = daysTrades.some(b => b.tradeType === 'regular');
+        // Pobierz limit dla tego dnia (domyślnie 1, jeśli nie ma w EVENT_REGULAR_LIMITS)
+        const regularLimit = EVENT_REGULAR_LIMITS[dateStr] || 1;
 
-            if (remoteTaken && regularTaken) return { className: 'day-red', remoteFree: false, regularFree: false };
-            if (remoteTaken && !regularTaken) return { className: 'day-light-green', remoteFree: false, regularFree: true };
-            if (!remoteTaken && regularTaken) return { className: 'day-yellow', remoteFree: true, regularFree: false };
-            return { className: 'day-dark-green', remoteFree: true, regularFree: true };
+        const daysTrades = window.existingBookings.filter(b => b.date === dateStr);
+    
+        // Sprawdzamy zajętość
+        const remoteTaken = daysTrades.some(b => b.tradeType === 'remote');
+        const regularCount = daysTrades.filter(b => b.tradeType === 'regular').length;
+    
+        const isRemoteFree = !remoteTaken;
+        const isRegularFree = regularCount < regularLimit;
+
+        // Logika kolorów:
+        if (!isRemoteFree && !isRegularFree) return { className: 'day-red', remoteFree: false, regularFree: false };
+        if (!isRemoteFree && isRegularFree) return { className: 'day-light-green', remoteFree: false, regularFree: true };
+        if (isRemoteFree && !isRegularFree) return { className: 'day-yellow', remoteFree: true, regularFree: false };
+    
+        return { className: 'day-dark-green', remoteFree: true, regularFree: true };
+    }
+
+    function openBookingModal(dateStr, remoteFree, regularFree) {
+        document.getElementById('form-date-field').value = dateStr;
+    
+        // Dynamiczny tytuł informujący o limitach
+        const regularLimit = EVENT_REGULAR_LIMITS[dateStr] || 1;
+        const lang = localStorage.getItem('selectedLang') || 'pl';
+        const dateLabel = lang === 'pl' ? "Data tradu" : "Trade Date";
+    
+        document.getElementById('modal-date-display').innerText = `${dateLabel}: ${dateStr} ${regularLimit > 1 ? `(Limit: ${regularLimit})` : ''}`;
+    
+        const select = document.getElementById('form-tradetype');
+        select.innerHTML = '';
+
+        if (remoteFree) {
+            const optRemote = new Option(lang === 'pl' ? 'Remote Trade' : 'Remote Trade', 'remote');
+            select.appendChild(optRemote);
+        }
+    
+        if (regularFree) {
+            const optRegular = new Option(lang === 'pl' ? 'Regular / In-Person Trade' : 'Regular / In-Person Trade', 'regular');
+            select.appendChild(optRegular);
         }
 
-        function openBookingModal(dateStr, remoteFree, regularFree) {
-            document.getElementById('form-date-field').value = dateStr;
-            document.getElementById('modal-date-display').innerText = `Trade Date: ${dateStr}`;
-            
-            const select = document.getElementById('form-tradetype');
-            select.innerHTML = '';
-
-            if (remoteFree) select.appendChild(new Option('Remote Trade', 'remote'));
-            if (regularFree) select.appendChild(new Option('Regular / In-Person Trade', 'regular'));
-
-            document.getElementById('booking-modal').style.display = 'flex';
-        }
+    document.getElementById('booking-modal').style.display = 'flex';
+    }
 
         function closeModal() {
             document.getElementById('booking-modal').style.display = 'none';
