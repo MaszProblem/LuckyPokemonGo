@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="lang.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GlupekzRivii Lucky Trade</title>
     <style>
@@ -187,9 +188,9 @@
     <h1>GlupekzRivii Lucky Trade</h1>
 
     <div class="tabs-container">
-        <button class="tab-btn active" onclick="switchTab('tab-szukam', this)">🔍 Wishlist</button>
-        <button class="tab-btn" onclick="switchTab('tab-oferuje', this)">🎁 Offer</button>
-        <button class="tab-btn" onclick="switchTab('tab-kalendarz', this)">📅 Calendar</button>
+        <button data-i18n="tab_offer" onclick="showTab('offer')"></button>
+        <button data-i18n="tab_wishlist" onclick="showTab('wishlist')"></button>
+        <button data-i18n="tab_calendar" onclick="showTab('calendar')"></button>
     </div>
 
     <div id="tab-szukam" class="tab-content active">
@@ -247,14 +248,14 @@
         <div id="total-sum" class="summary-badge">Total Pokémon available: Calculating...</div>
 
         <div class="filter-container">
-            <button class="filter-btn active" onclick="filterOffer('all', this)">All</button>
-            <button class="filter-btn" onclick="filterOffer('normal-non-shiny', this)">Normal</button>
-            <button class="filter-btn" onclick="filterOffer('shiny', this)">Shiny</button>
-            <button class="filter-btn" onclick="filterOffer('costume', this)">Costume</button>
-            <button class="filter-btn" onclick="filterOffer('background', this)">Background</button>
-            <button class="filter-btn" onclick="filterOffer('localBackground', this)">Local Background</button>
-            <button class="filter-btn" onclick="filterOffer('gigantamax', this)">Gigantamax</button>
-            <button class="filter-btn" onclick="filterOffer('regional', this)">Regional (GO)</button>
+           <button class="filter-btn active" onclick="filterOffer('all', this)" data-i18n="filter_all"></button>
+            <button class="filter-btn" onclick="filterOffer('normal-non-shiny', this)" data-i18n="filter_normal"></button>
+            <button class="filter-btn" onclick="filterOffer('shiny', this)" data-i18n="filter_shiny"></button>
+            <button class="filter-btn" onclick="filterOffer('costume', this)" data-i18n="filter_costume"></button>
+            <button class="filter-btn" onclick="filterOffer('background', this)" data-i18n="filter_background"></button>
+            <button class="filter-btn" onclick="filterOffer('localBackground', this)" data-i18n="filter_local_bg"></button>
+            <button class="filter-btn" onclick="filterOffer('gigantamax', this)" data-i18n="filter_gmax"></button>
+            <button class="filter-btn" onclick="filterOffer('regional', this)" data-i18n="filter_regional"></button>
         </div>
 
         <div id="my-offer-grid-container">
@@ -298,11 +299,17 @@
     </div>
 
     <div id="tab-kalendarz" class="tab-content">
-    <div class="calendar-legend" style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; background: #1a1a1e; padding: 15px; border-radius: 8px; border: 1px solid #2c2c35; font-size: 12px;">
-    <div style="display: flex; align-items: center; gap: 8px;"><div class="calendar-day day-dark-green" style="padding: 5px; min-width: 20px; cursor: default;"></div> <span>Remote & Regular Free</span></div>
-    <div style="display: flex; align-items: center; gap: 8px;"><div class="calendar-day day-light-green" style="padding: 5px; min-width: 20px; cursor: default;"></div> <span>Regular Free (Remote Taken)</span></div>
-    <div style="display: flex; align-items: center; gap: 8px;"><div class="calendar-day day-yellow" style="padding: 5px; min-width: 20px; cursor: default;"></div> <span>Remote Free (Regular Taken)</span></div>
-    <div style="display: flex; align-items: center; gap: 8px;"><div class="calendar-day day-red" style="padding: 5px; min-width: 20px; cursor: default;"></div> <span>Full / Busy</span></div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+    <div class="calendar-day day-dark-green"></div> 
+    <span data-i18n="legend_remote_free"></span>
+</div>
+<div style="display: flex; align-items: center; gap: 8px;">
+    <div class="calendar-day day-light-green"></div> 
+    <span data-i18n="legend_regular_free"></span>
+</div>
+<div style="display: flex; align-items: center; gap: 8px;">
+    <div class="calendar-day day-red"></div> 
+    <span data-i18n="legend_busy"></span>
 </div>
     <div class="calendar-wrapper">
         <div class="calendar-nav" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -322,17 +329,17 @@
                 <input type="hidden" id="form-date-field">
                 
                 <div class="form-group">
-                    <label>In-Game Nickname *</label>
+                    <label for="form-nickname" data-i18n="form_nickname"></label>
                     <input type="text" id="form-nickname" required placeholder="Enter your trainer name">
                 </div>
 
                 <div class="form-group">
-                    <label>Trade Type *</label>
+                   <label for="form-tradetype" data-i18n="form_trade_type"></label>
                     <select id="form-tradetype" required></select>
                 </div>
 
                 <div class="form-group">
-                    <label>What you want from me * (Max 3, 1st mandatory)</label>
+                   <label for="form-want1" data-i18n="form_i_want"></label>
                     <div class="form-row-3">
                         <input type="text" id="form-want1" list="offer-names-list" required placeholder="Pokemon 1">
                         <input type="text" id="form-want2" list="offer-names-list" placeholder="Pokemon 2">
@@ -341,7 +348,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>What you offer * (Max 3, 1st mandatory)</label>
+                    <label for="form-offer1" data-i18n="form_i_offer"></label>
                     <div class="form-row-3">
                         <input type="text" id="form-offer1" list="wishlist-names-list" required placeholder="Pokemon 1">
                         <input type="text" id="form-offer2" list="wishlist-names-list" placeholder="Pokemon 2">
@@ -350,11 +357,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Contact Info (Optional)</label>
+                    <label for="form-contact" data-i18n="form_contact"></label>
                     <input type="text" id="form-contact" placeholder="Discord, Telegram, Phone...">
                 </div>
 
-                <button type="submit" class="submit-btn">Save Booking</button>
+                <button type="submit" class="submit-btn" data-i18n="btn_save"></button>
             </form>
         </div>
     </div>
