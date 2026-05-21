@@ -49,11 +49,18 @@ const i18n = {
 
 // Funkcja zmieniająca język
 function setLanguage(lang) {
-    localStorage.setItem('preferredLang', lang);
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
-    });
+    localStorage.setItem('selectedLang', lang);
+    updateInterfaceLanguage(lang);
+    
+    // Wizualna zmiana przycisków PL/EN
+    const btnPl = document.getElementById('lang-pl');
+    const btnEn = document.getElementById('lang-en');
+    
+    if(btnPl && btnEn) {
+        btnPl.classList.toggle('active', lang === 'pl');
+        btnEn.classList.toggle('active', lang === 'en');
+    }
+
     
     // Klasa active dla przycisków
     document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
