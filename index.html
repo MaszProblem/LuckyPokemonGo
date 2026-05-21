@@ -745,7 +745,8 @@ function buildCalendar() {
     const originalText = submitBtn.innerText;
     
     // Blokada przycisku i zmiana tekstu (Feedback wizualny)
-    submitBtn.innerText = "Saving...";
+        
+    submitBtn.innerText = alert(i18n[localStorage.getItem('preferredLang') || 'pl'].msg_success);
     submitBtn.disabled = true;
 
     // Pobieranie danych z pól formularza
@@ -835,6 +836,34 @@ function updateDatalists() {
     wishList.innerHTML = uniqueWishOptions.map(name => `<option value="${name}">`).join('');
     
     console.log("Datalists updated with Shiny markers (*)");
+}
+
+        function updateInterfaceLanguage(lang) {
+    // 1. Znajdź wszystkie elementy z atrybutem data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[lang] && i18n[lang][key]) {
+            el.innerText = i18n[lang][key];
+        }
+    });
+
+    // 2. Obsługa placeholderów (opcjonalnie)
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (i18n[lang] && i18n[lang][key]) {
+            el.placeholder = i18n[lang][key];
+        }
+    });
+}
+
+function setLanguage(lang) {
+    localStorage.setItem('selectedLang', lang);
+    updateInterfaceLanguage(lang);
+    
+    // Wizualna zmiana przycisków PL/EN
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.id === `lang-${lang}`);
+    });
 }
     </script>
 <datalist id="offer-names-list"></datalist>
